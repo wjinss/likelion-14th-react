@@ -6,90 +6,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-
-    <!-- 컨테이너(container) <- 동적 생성된 요소 객체 마운트 -->
+    <!-- 컨테이너 : 동적 생성된 요소 객체 마운트 -->
     <main>
-      <!-- HTML: 마크업 생성(Markup Generation) -->
+      <!-- html: 마크업 생성 -->
       <!-- <section class="bunx-introduction">
-        <h1> <code>bunx</code> 명령 </h1>
+        <h1><code>bunx</code>명령</h1>
         <p>
-          <a href="https://bun.sh" target="_blank" rel="noopener noreferrer">Bun</a>
-          의 빠른 시작 덕분에, <code>bunx</code>는 로컬에 설치된 패키지 실행 시 <code>npx</code>보다 약 100배 빠릅니다.
+          <a href="http://bun.sh" target="_blank" rel="noopenner noreferrer"
+            >Bun</a
+          >
+          의 빠른 시작 덕분에, <code>bunx</code>는 로컬에 설치된 패키지 실행 시
+          <code>npx</code>보다 약 100배 빠릅니다.
         </p>
       </section> -->
     </main>
-
-    <script data-description="선언적 API를 사용한 방식의 JavaScript 마크업 제너레이션">
+    <script
+      data-description="선언적 API를 사용한 명형형 방식의 js 마크업 생성기"
+    >
       {
         // 2. 선언적(Declarative) Programming
         //    - Euid.createElement(elementType, properties, ...children)
         //    - EuidDOM.createRoot(container)
-        
+
         // Euid.createElement(elementType, properties, ...children)
         const Euid = Object.freeze({
           createElement(elementType, properties = {}, ...children) {
-            console.log(`elementType`, elementType)
-            console.log(`properties`, properties)
-            console.log(`children`, children)
-          }
-        })
+            console.log(`elementType`, elementType);
+            console.log(`properties`, properties);
+            console.log(`children`, children);
+          },
+        });
 
         // <section class="bunx-introduction"></section>
-        const element = Euid.createElement('section', { className: 'bunx-introduction' })
-        console.log(element)
+        const element = Euid.createElement("section", {
+          className: "bunx-introduction",
+        });
+        console.log(element);
       }
     </script>
-
-    <script data-description="Web API를 사용한 명령형 방식의 JavaScript 마크업 제너레이션">
-      ;(() => {
-        // JavaScript: 마크업 생성(Markup Generation)
-        // 1. 명령형(Imperative) Programming
-        //    - document.createElement()
-        //    - Element.classList
-        //    - Element.setAttribute()
-        //    - Element.appendChild()
-        //    - Element.append()
-
-        /* 
-        <section class="bunx-introduction">
-          <h1> <code>bunx</code> 명령 </h1>
-          <p>
-            <a href="https://bun.sh" target="_blank" rel="noopener noreferrer">Bun</a>
-            의 빠른 시작 덕분에, <code>bunx</code>는 로컬에 설치된 패키지 실행 시 <code>npx</code>보다 약 100배 빠릅니다.
-          </p>
-        </section>
-        */
-
+    <script data-description="Web API를 사용한 명형형 방식의 js 마크업 생성기">
+      () => {
+        // js: 마크업 생성
+        // 명령형 프로그래밍
+        // - `document.createElement()`
+        // - `Element.classList`
+        // - `Element.setAttribute()`
+        // - `Element.appendChild()`
+        // - `Element.append()`;
         // 단계 1. section 요소 만들고, 속성 추가
-        const sectionElement = document.createElement('section')
-        sectionElement.classList.add('bunx-introduction')
-        // console.log(sectionElement)
+        const sectionElement = document.createElement("section");
+        sectionElement.classList.add("bunx-introduction");
+        // console.log(sectionElement);
 
         // 단계 2. h1 요소 만들기
-        const h1Element = document.createElement('h1')
+        const h1Element = document.createElement("h1");
 
         // 단계 2-1. code 요소 만들고, 텍스트 콘텐츠로 'bunx' 삽입
-        const h1CodeElement = document.createElement('code')
-        h1CodeElement.textContent = 'bunx'
-        // console.log(h1CodeElement)
+        const h1CodeElement = document.createElement("code");
+        h1CodeElement.textContent = "bunx";
+        // console.log(h1CodeElement);
 
-        // 단계 2-2. h1 요소의 자식들(children)로 code 요소와 '명령' 텍스트 노드 추가
-        // const textNode = document.createTextNode('명령')
-        // h1Element.appendChild(h1CodeElement)
-        // h1Element.appendChild(textNode)
-        h1Element.append(h1CodeElement, '명령')
-        // console.log(h1Element)
+        // 단계 2-2. h1 요소의 자식들(children)로 code 요소와 '명령' 택스트 노드 추가
+        // const textNode = document.createTextNode("명령");
+        // h1Element.appendChild(h1CodeElement);
+        // h1Element.appendChild(textNode);
+        h1Element.append(h1CodeElement, "명령");
+        // console.log(h1Element);
 
         // 단계 3. p 요소 만들기
-        const pElement = document.createElement('p')
+        const pElement = document.createElement("p");
 
         // 단계 3-1. a 요소를 만들고, href | rel | target 속성 추가, 'Bun' 텍스트 삽입
-        const aLinkElement = document.createElement('a')
-        aLinkElement.setAttribute('href', 'https://bun.sh')
-        aLinkElement.setAttribute('rel', 'noopener noreferrer')
-        aLinkElement.setAttribute('target', '_blank')
-        aLinkElement.textContent = 'Bun'
-        // console.log(aLinkElement)
+        const aLinkElement = document.createElement("a");
+        aLinkElement.setAttribute("href", "https://bun.sh");
+        aLinkElement.setAttribute("rel", "noopener noreferrer");
+        aLinkElement.setAttribute("target", "_blank");
+        aLinkElement.textContent = "Bun";
+        // console.log(aLinkElement);
 
         // 단계 3-2. pElement 요소의 자식들(children)을 구성해 삽입
         // [
@@ -100,35 +93,32 @@
         //   '보다 약 100배 빠릅니다.'
         // ]
 
-        const bunxCodeElement = document.createElement('code')
-        bunxCodeElement.textContent = 'bunx'
+        const bunxCodeElement = document.createElement("code");
+        bunxCodeElement.textContent = "bunx";
 
-        const npxCodeElement = document.createElement('code')
-        npxCodeElement.textContent = 'npx'
+        const npxCodeElement = document.createElement("code");
+        npxCodeElement.textContent = "npx";
 
         pElement.append(
           aLinkElement,
-          '의 빠른 시작 덕분에, ',
+          "의 빠른 시작 덕분에, ",
           bunxCodeElement,
-          '는 로컬에 설치된 패키지 실행 시 ',
+          "는 로컬에 설치된 패키지 실행 시 ",
           npxCodeElement,
-          '보다 약 100배 빠릅니다.'
-        )
-        // console.log(pElement)
+          "보다 약 100배 빠릅니다."
+        );
+
+        // console.log(pElement);
 
         // 단계 4. sectionElement에 h1Element, pElement 각 요소 조립
-        sectionElement.append(h1Element, pElement)
-        // console.log(sectionElement)
+        sectionElement.append(h1Element, pElement);
+        console.log(sectionElement);
 
-        // 단계 5. 실제 DOM에 생성한 sectionElement 객체를 마운트(mount)
-        const container = document.querySelector('main')
-        // console.log(container)
+        // 단계 5. 실제 DOM에 생성한 sectionElement를 마운트
+        const container = document.querySelector("main");
 
-        container.appendChild(sectionElement)
-
-      })
+        container.appendChild(sectionElement);
+      };
     </script>
-
-    
   </body>
 </html>
