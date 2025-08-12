@@ -2,7 +2,7 @@
 // import { ShortcutFunction as Shortcut } from "./components/shortcut.js";
 // import Output from "./components/output.js";
 
-import { Output, Logo, Shortcut } from "@/components";
+import { Output, Logo, Shortcut } from "./components/index.js";
 
 export default function App(props) {
   // 문 (값이 없다)
@@ -40,7 +40,7 @@ export default function App(props) {
 
   // 배열의 forEach 메서드 (값이 없음) ❌
   // 배열의 map 메서드 (값이 있음) ✅
-  const renderElements = Array.from({ length: 3 }).map((_, index) =>
+  const renderElements = Array.from({ length: 2 }).map((_, index) =>
     React.createElement(
       Output,
       {
