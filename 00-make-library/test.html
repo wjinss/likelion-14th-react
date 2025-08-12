@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>선언적 프로그래밍 방식의 라이브러리 만들기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <main></main>
+
+    <script
+      data-description="선언적 API를 사용한 방식의 JavaScript 마크업 제너레이션"
+    >
+      {
+        const Euid = Object.freeze({
+          createElement(eleType, props = {}, ...children) {
+            const ele = document.createElement(eleType);
+
+            for (let [key, value] of Object.entries(props)) {
+              if (key.includes("className")) key = "class";
+              ele.setAttribute(key, value);
+            }
+
+            ele.append(...children);
+
+            return ele;
+          },
+        });
+
+        const sectionEle = Euid.createElement(
+          "section",
+          {
+            className: "bunx-introduction",
+          },
+          Euid.createElement(
+            "h1",
+            {},
+            Euid.createElement("code", {}, "bunx"),
+            " 명령"
+          ),
+
+          Euid.createElement(
+            "p",
+            {},
+            Euid.createElement(
+              "a",
+              {
+                href: "https://bun.sh",
+                rel: "noopener noreferrer",
+                target: "_blank",
+              },
+              "bun"
+            ),
+            "의 빠른 시작 덕분에, ",
+            Euid.createElement("code", {}, "bunx"),
+            "는 로컬에 설치된 패키지 실행 시 ",
+            Euid.createElement("code", {}, "npx"),
+            "보다 약 100배 빠릅니다."
+          )
+        );
+
+        class EuidDOMRoot {
+          // 특정 dom 요송안에 다른 요소를 넣거나 제거
+          #container = null; // 프라이빗 필드로 클래스 외부에서 접근x, 컨테이너의 dom 저장
+          constructor(containner) {
+            this.#container = containner; // 인자로 받은 container DOM요소를 클래스 내부의 #container에 저장
+          }
+
+          render(element) {
+            this.#container.append(element); // 인자로 전달받은 요소를 컨테이너의 뒤에 추가
+          }
+
+          unmount() {
+            this.#container.firstElementChild.remove(); // 컨테이너의 첫번째 자식 제거
+          }
+        }
+
+        const EuidDOM = Object.freeze({
+          createRoot(container) {
+            if (container?.nodeType !== document.ELEMENT_NODE) {
+              throw new Error(
+                "EuidDOM.createRoot() 함수에는 실제 DOM 요소 노드가 전달되어야 합니다."
+              );
+            }
+
+            return new EuidDOMRoot(container);
+          },
+        });
+
+        const container = document.querySelector("main");
+        const euidDomRoot = EuidDOM.createRoot(container);
+
+        euidDomRoot.render(sectionEle);
+      }
+    </script>
+  </body>
+</html>

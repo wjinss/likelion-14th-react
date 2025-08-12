@@ -2,6 +2,7 @@ const { createElement: h } = React;
 const { createRoot } = ReactDOM;
 
 const h1Element = h("h1", {}, h("code", {}, "bunx"), " 명령");
+console.log(h1Element);
 
 const pElement = h(
   "p",
