@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "react-component",
+  "description": "리액트 엘리먼트를 생성하는 컴포넌트를 사용해 리액트 컴포넌트를 만듭니다~",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bunx live-server --host=localhost --port=3000 --no-browser"
+  }
+}
