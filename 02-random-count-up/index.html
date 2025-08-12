@@ -94,7 +94,11 @@
         // 문서 타이틀 ORIGIN_TITLE 설정
         const ORIGIN_TITLE = document.title;
         // 목표 카운트 targetCount 변수에 랜덤 목표 카운트 값 설정
-        const targetCount = getRandomMinMax();
+        let targetCount;
+
+        function setTargetCount() {
+          targetCount = getRandomMinMax();
+        }
         // 문서 타이틀 업데이트 함수 (기능) 설정
         // - '원본 제목 (목표 카운트)'
         function setDocumentTitle() {
@@ -214,6 +218,7 @@
         }
         // play함수;
         function play() {
+          setTargetCount();
           setDocumentTitle();
           setAppRandomHue();
           animate();
