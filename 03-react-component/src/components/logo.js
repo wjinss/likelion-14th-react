@@ -2,6 +2,7 @@
 // React Component Type
 // 1. Functional
 // 2. Class
+
 export function LogoFunction() {
   const logoElement = React.createElement(
     "svg",
