@@ -212,16 +212,35 @@
 
           animateId = requestAnimationFrame(animate); // 60FPS (1000 / 60 = 16.666ms)
         }
-
-        animate();
+        // play함수;
+        function play() {
+          setDocumentTitle();
+          setAppRandomHue();
+          animate();
+        }
 
         // replay 함수
         // - 카운트 업 애니메이션 리플레이
+        function replay() {
+          count = 0;
+          play();
+        }
+        replay();
 
         // 이벤트 리스닝
         // - DOMContentLoaded (로드 이후, 애니메이션 실행)
         // - click (클릭할 때, 리플레이)
         // - keyup (Shift + Enter 키를 누르면, 리플레이)
+
+        document.addEventListener("DOMContentLoaded", () => {
+          play();
+          document.body.addEventListener("click", replay);
+          document.addEventListener("keydown", (e) => {
+            if (e.shiftKey && e.code === "Enter") {
+              replay();
+            }
+          });
+        });
       }
     </script>
   </body>
