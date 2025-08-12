@@ -62,3 +62,53 @@ function App() {
 ReactDOM.createRoot(document.getElementById("container")).render(
   React.createElement(App)
 );
+
+// ------------------연습
+
+() => {
+  function AppButton(props) {
+    const { type, className, disabled } = props;
+    return React.createElement(
+      "button",
+      {
+        type: type,
+        className: className,
+        disabled: disabled,
+      },
+      props.disabled
+    );
+  }
+
+  const DisabledSubmitButton = React.createElement(
+    AppButton,
+    {
+      type: "submit",
+      className: "submit-button",
+      disabled: true,
+    },
+    "폼 제출"
+  );
+
+  const EnableNormalButton = React.createElement(
+    AppButton,
+    {
+      type: "normal",
+      className: "normal-button",
+      disabled: false,
+    },
+    "표시/감춤"
+  );
+
+  function App() {
+    return React.createElement(
+      "div",
+      { className: "app" },
+      DisabledSubmitButton,
+      EnableNormalButton
+    );
+  }
+
+  ReactDom.createRoot(document.getElementById("container")).render(
+    React.createElement(App)
+  );
+};

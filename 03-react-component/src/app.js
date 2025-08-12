@@ -40,7 +40,7 @@ export default function App(props) {
 
   // 배열의 forEach 메서드 (값이 없음) ❌
   // 배열의 map 메서드 (값이 있음) ✅
-  const renderElements = Array.from({ length: 2 }).map((_, index) =>
+  const renderElements = Array.from({ length: 1 }).map((_, index) =>
     React.createElement(
       Output,
       {
@@ -73,3 +73,28 @@ export default function App(props) {
 //     )
 //   );
 // }
+
+//-------------------연습-----
+() => {
+  // import { Output, Logo, Shortcut } from "./components/index.js";
+  /* export default */ function App(props) {
+    const renderElements = Array.from({ length: 2 }).map((_, idx) =>
+      React.createElement(
+        Output,
+        {
+          key: idx,
+          isAnimate: props.count < props.targetCount ? true : false,
+        },
+        props.count + idx
+      )
+    );
+
+    return React.createElement(
+      "div",
+      { className: "randomCountUpApp" },
+      React.createElement(Logo),
+      renderElements,
+      React.createElement(Shortcut)
+    );
+  }
+};
