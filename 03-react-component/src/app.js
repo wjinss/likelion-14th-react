@@ -1,6 +1,8 @@
-import { LogoFunction as Logo } from "./components/logo.js";
-import { ShortcutFunction as Shortcut } from "./components/shortcut.js";
-import Output from "./components/output.js";
+// import { LogoFunction as Logo } from "./components/logo.js";
+// import { ShortcutFunction as Shortcut } from "./components/shortcut.js";
+// import Output from "./components/output.js";
+
+import { Output, Logo, Shortcut } from "@/components";
 
 export default function App(props) {
   // 문 (값이 없다)

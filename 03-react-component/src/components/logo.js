@@ -3,7 +3,7 @@
 // 1. Functional
 // 2. Class
 
-export function LogoFunction() {
+export default function LogoFunction() {
   const logoElement = React.createElement(
     "svg",
     {
@@ -51,6 +51,7 @@ export function LogoFunction() {
   return logoElement;
 }
 
+// 학습 가이드 (참고)
 export class LogoClass extends React.Component {
   render() {
     const logoElement = React.createElement(
