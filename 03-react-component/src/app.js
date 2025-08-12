@@ -54,6 +54,20 @@ export default function App(props) {
     { className: "randomCountUpApp" },
     React.createElement(Logo),
     renderElements,
+    // renderLists(3, props),
     React.createElement(Shortcut)
   );
 }
+// 함수를 사용한 리스트 렌더링
+// function renderLists(length, props) {
+//   return Array.from({ length }).map((_, index) =>
+//     React.createElement(
+//       Output,
+//       {
+//         key: crypto.randomUUID(),
+//         isAnimate: props.count < props.targetCount ? true : false,
+//       },
+//       props.count + index
+//     )
+//   );
+// }
