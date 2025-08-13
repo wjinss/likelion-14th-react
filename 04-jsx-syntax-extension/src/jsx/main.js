@@ -1,6 +1,6 @@
 import App from "./app.js";
 
-const MIN = 30,
+const MIN = 10,
   MAX = 99;
 
 function getRandomMinMax(min = MIN, max = MAX) {
