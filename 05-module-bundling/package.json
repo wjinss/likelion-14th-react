@@ -7,7 +7,10 @@
     "start": "run-p watch serve",
     "serve": "bunx live-server --host=localhost --port=3000 --no-browser",
     "transpile": "babel src --out-dir assets/scripts",
-    "watch": "bun transpile --watch"
+    "watch": "bun transpile --watch",
+    "build": "run-s clean bundle",
+    "bundle": "bun build index.html --minify --outdir dist",
+    "clean": "rimraf -rf dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.0",
