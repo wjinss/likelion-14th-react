@@ -10,14 +10,14 @@ export default function Output(props) {
 
 // ------------------연습
 
-() => {
-  /* export default */ function OutputComponent(props) {
-    const classNames = `output ${props.isAnimate ? "is-animate" : ""}`.trim();
+// () => {
+//   /* export default */ function OutputComponent(props) {
+//     const classNames = `output ${props.isAnimate ? "is-animate" : ""}`.trim();
 
-    return React.createElement(
-      "output",
-      { className: classNames },
-      props.children
-    );
-  }
-};
+//     return React.createElement(
+//       "output",
+//       { className: classNames },
+//       props.children
+//     );
+//   }
+// };

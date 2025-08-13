@@ -47,21 +47,21 @@ export class ShortcutClass extends React.Component {
 
 // ------------------연습
 
-() => {
-  /* export default */ function ShortCutComponent() {
-    const data = {
-      className: "shortcut-info",
-      shortcutKey: "Shift + Enter",
-      message: " 키를 누르면 애니메이션이 다시 시작됩니다.",
-    };
+// () => {
+//   /* export default */ function ShortCutComponent() {
+//     const data = {
+//       className: "shortcut-info",
+//       shortcutKey: "Shift + Enter",
+//       message: " 키를 누르면 애니메이션이 다시 시작됩니다.",
+//     };
 
-    return React.createElement(
-      "p",
-      {
-        className: data.className,
-      },
-      React.createElement("code", {}, data.shortcutKey),
-      data.message
-    );
-  }
-};
+//     return React.createElement(
+//       "p",
+//       {
+//         className: data.className,
+//       },
+//       React.createElement("code", {}, data.shortcutKey),
+//       data.message
+//     );
+//   }
+// };

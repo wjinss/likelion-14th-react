@@ -75,26 +75,26 @@ export default function App(props) {
 // }
 
 //-------------------연습-----
-() => {
-  // import { Output, Logo, Shortcut } from "./components/index.js";
-  /* export default */ function App(props) {
-    const renderElements = Array.from({ length: 2 }).map((_, idx) =>
-      React.createElement(
-        Output,
-        {
-          key: idx,
-          isAnimate: props.count < props.targetCount ? true : false,
-        },
-        props.count + idx
-      )
-    );
+// () => {
+//   // import { Output, Logo, Shortcut } from "./components/index.js";
+//   /* export default */ function App(props) {
+//     const renderElements = Array.from({ length: 2 }).map((_, idx) =>
+//       React.createElement(
+//         Output,
+//         {
+//           key: idx,
+//           isAnimate: props.count < props.targetCount ? true : false,
+//         },
+//         props.count + idx
+//       )
+//     );
 
-    return React.createElement(
-      "div",
-      { className: "randomCountUpApp" },
-      React.createElement(Logo),
-      renderElements,
-      React.createElement(Shortcut)
-    );
-  }
-};
+//     return React.createElement(
+//       "div",
+//       { className: "randomCountUpApp" },
+//       React.createElement(Logo),
+//       renderElements,
+//       React.createElement(Shortcut)
+//     );
+//   }
+// };
