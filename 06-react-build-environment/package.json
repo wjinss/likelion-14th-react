@@ -2,10 +2,12 @@
   "private": true,
   "type": "module",
   "name": "react-build-environment",
-  "description": "리액트 빌드 환경을 메뉴열로 구성합니다.",
+  "description": "리액트 빌드 환경을 매뉴얼 구성합니다.",
   "version": "1.0.0",
   "scripts": {
-    "dev": "bun index.html"
+    "dev": "bun index.html",
+    "format:check": "prettier --check --cache \"src/**/*.{js,jsx,json}\"",
+    "format:fix": "prettier --write --cache --list-different \"src/**/*.{js,jsx,json}\""
   },
   "engines": {
     "bun": ">=1.0.0"
@@ -16,6 +18,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7"
+    "@types/react-dom": "^19.1.7",
+    "prettier": "^3.6.2"
   }
 }
