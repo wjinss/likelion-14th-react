@@ -2,13 +2,14 @@ import js from '@eslint/js'
 import globals from 'globals'
 import pluginReact from 'eslint-plugin-react'
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
   // 'dist' 폴더 전체를 ESLint 검사에서 제외 (빌드된 결과물 무시)
   globalIgnores(['dist']),
+
   {
     // 검사할 파일(src 폴더 내 js,jsx) 패턴 지정
     files: ['src/**/*.{js,jsx}'],

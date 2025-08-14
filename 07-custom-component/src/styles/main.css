@@ -1,4 +1,5 @@
 @import "./common/_normalize.css";
 @import "./common/_base.css";
 @import "./common/_animation.css";
-@import "./_demo.css";
+@import "./demo/demo.css";
+@import "./demo/variables.css";
