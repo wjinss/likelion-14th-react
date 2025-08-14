@@ -1,3 +1,4 @@
+import React from 'react';
 export default function Logo() {
   return /*#__PURE__*/React.createElement("svg", {
     className: "logo",

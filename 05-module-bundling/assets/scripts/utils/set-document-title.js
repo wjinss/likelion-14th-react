@@ -1,3 +1,3 @@
-export default function setDocumentTitle() {
-  document.title = ORIGIN_TITLE + ` (${targetCount})`;
+export default function setDocumentTitle(originTitle, targetCount) {
+  document.title = originTitle + ` (${targetCount})`;
 }

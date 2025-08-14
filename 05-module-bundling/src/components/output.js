@@ -1,5 +1,6 @@
-import React from "react";
+import React from 'react'
+
 export default function Output(props) {
-  const classNames = `output ${props.isAnimate ? "is-animate" : ""}`;
-  return <output className={classNames.trim()}>{props.children}</output>;
+  const classNames = `output ${props.isAnimate ? 'is-animate' : ''}`
+  return <output className={classNames.trim()}>{props.children}</output>
 }

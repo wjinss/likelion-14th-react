@@ -1,3 +1,4 @@
+import React from 'react';
 export default function ShortcutInfo() {
   return /*#__PURE__*/React.createElement("p", {
     className: "shortcut-info"

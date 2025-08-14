@@ -1,3 +1,4 @@
+import React from 'react'
 import { Output, Logo, ShortcutInfo } from './components/index.js'
 
 export default function App(props) {
