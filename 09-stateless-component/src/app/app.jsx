@@ -28,9 +28,9 @@ function LogoDemo() {
   return (
     <Demo col>
       {/* <Logo /> */}
-      <Logo.Primary />
+      <Logo.Primary className={"yamoo9"} />
       {/* <Logo outline /> */}
-      <Logo.PrimaryOutline />
+      <Logo.PrimaryOutline style={{ marginBlockStart: 100 }} />
       {/* <Logo type="secondary" /> */}
       <Logo.Secondary />
       {/* <Logo type="secondary" outline /> */}
