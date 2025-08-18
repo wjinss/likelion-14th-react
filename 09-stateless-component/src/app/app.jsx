@@ -1,8 +1,8 @@
-import { Demo, Spinner, SvgIcon, UploadButton } from '@/components'
-import { UPLOAD_STATUS } from '@/components/upload-button'
-import { ICON_TYPES } from '@/components/svg-icon'
-import './app.css'
-import Logo from '@/components/logo'
+import { Demo, Spinner, SvgIcon, UploadButton } from "@/components";
+import { UPLOAD_STATUS } from "@/components/upload-button";
+import { ICON_TYPES } from "@/components/svg-icon";
+import "./app.css";
+import Logo from "@/components/logo";
 
 export default function App() {
   return (
@@ -21,18 +21,22 @@ export default function App() {
         <LogoDemo />
       </article>
     </section>
-  )
+  );
 }
 
 function LogoDemo() {
   return (
     <Demo col>
-      <Logo />
-      <Logo outline />
-      <Logo type="secondary" />
-      <Logo type="secondary" outline />
+      {/* <Logo /> */}
+      <Logo.Primary />
+      {/* <Logo outline /> */}
+      <Logo.PrimaryOutline />
+      {/* <Logo type="secondary" /> */}
+      <Logo.Secondary />
+      {/* <Logo type="secondary" outline /> */}
+      <Logo.SecondaryOutline />
     </Demo>
-  )
+  );
 }
 
 function IconsDemo() {
@@ -49,7 +53,7 @@ function IconsDemo() {
       {/* 아이콘 색상 지정 (기본값: '#525577') */}
       <SvgIcon type={ICON_TYPES.NOT_ALLOWED} color="#f72b73" />
     </Demo>
-  )
+  );
 }
 
 function ButtonDemo() {
@@ -66,5 +70,5 @@ function ButtonDemo() {
       {/* 비활성화된 업로드 버튼 */}
       <UploadButton disabled />
     </Demo>
-  )
+  );
 }

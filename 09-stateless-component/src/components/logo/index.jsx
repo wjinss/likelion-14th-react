@@ -1,5 +1,5 @@
-import { LOGO_COLOR, LOGO_PATH } from './constants'
-import './style.css'
+import { LOGO_COLOR, LOGO_PATH } from "./constants";
+import "./style.css";
 
 /**
  * Logo 컴포넌트
@@ -7,21 +7,21 @@ import './style.css'
  * @param {'primary' | 'secondary'} props.type - 로고 타입
  * @param {boolean} props.outline - 로고 모양 (fill | outline)
  */
-export default function Logo({ type = 'primary', outline = false }) {
-  let path = ''
-  let color = ''
+export default function Logo({ type = "primary", outline = false }) {
+  let path = "";
+  let color = "";
 
-  const isPrimary = type === 'primary'
+  const isPrimary = type === "primary";
 
   if (isPrimary) {
-    path = !outline ? LOGO_PATH.PRIMARY : LOGO_PATH.PRIMARY_OUTLINE
-    color = LOGO_COLOR.PRIMARY
+    path = !outline ? LOGO_PATH.PRIMARY : LOGO_PATH.PRIMARY_OUTLINE;
+    color = LOGO_COLOR.PRIMARY;
   } else {
-    path = !outline ? LOGO_PATH.SECONDARY : LOGO_PATH.SECONDARY_OUTLINE
-    color = LOGO_COLOR.SECONDARY
+    path = !outline ? LOGO_PATH.SECONDARY : LOGO_PATH.SECONDARY_OUTLINE;
+    color = LOGO_COLOR.SECONDARY;
   }
 
-  const colorAttr = { [outline ? 'stroke' : 'fill']: color }
+  const colorAttr = { [outline ? "stroke" : "fill"]: color };
 
   return (
     <figure className="logo">
@@ -34,5 +34,22 @@ export default function Logo({ type = 'primary', outline = false }) {
         })} */}
       </svg>
     </figure>
-  )
+  );
 }
+
+// --------------------------------------------------------------------------
+// 컴파운드 컴포넌트 패턴
+// --------------------------------------------------------------------------
+// React.Component
+// React.Fragment
+// --------------------------------------------------------------------------
+// Logo.Primary
+// Logo.PrimaryOutline
+// Logo.Secondary
+// Logo.SecondaryOutline
+// --------------------------------------------------------------------------
+
+Logo.Primary = () => <Logo />;
+Logo.PrimaryOutline = () => <Logo outline />;
+Logo.Secondary = () => <Logo type="secondary" />;
+Logo.SecondaryOutline = () => <Logo type="secondary" outline />;

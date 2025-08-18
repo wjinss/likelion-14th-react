@@ -1,4 +1,4 @@
-import './style.css'
+import "./style.css";
 
 /**
  * Demo 컴포넌트
@@ -7,5 +7,5 @@ import './style.css'
  * @param {React.ReactNode} props.children - 리액트 노드
  */
 export default function Demo({ col = false, children }) {
-  return <div className={`demo ${col ? 'col' : ''}`.trim()}>{children}</div>
+  return <div className={`demo ${col ? "col" : ""}`.trim()}>{children}</div>;
 }
