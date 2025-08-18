@@ -3,7 +3,7 @@ import { Component } from "react";
 import AccordionItem from "./accordion-item";
 
 // 클래스 컴포넌트
-export default class AccordionList extends Component {
+export class AccordionListClass extends Component {
   // 상태 선언
   // 클래스 필드 구문 활용
   state = {
