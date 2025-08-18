@@ -1,4 +1,4 @@
-import './style.css'
+import "./style.css";
 
 /**
  * LearnSection 컴포넌트
@@ -10,8 +10,8 @@ import './style.css'
 export default function LearnSection({ title, showTitle = false, children }) {
   return (
     <section className="learn-section">
-      <h1 className={showTitle ? null : 'sr-only'}>{title}</h1>
+      <h1 className={showTitle ? null : "sr-only"}>{title}</h1>
       {children}
     </section>
-  )
+  );
 }

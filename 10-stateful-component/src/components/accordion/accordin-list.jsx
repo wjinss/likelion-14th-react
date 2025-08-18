@@ -1,6 +1,6 @@
-import accordionData from './data.json'
-import { Component } from 'react'
-import AccordionItem from './accordion-item'
+import accordionData from "./data.json";
+import { Component } from "react";
+import AccordionItem from "./accordion-item";
 
 // 클래스 컴포넌트
 export default class AccordionList extends Component {
@@ -8,7 +8,7 @@ export default class AccordionList extends Component {
   // 클래스 필드 구문 활용
   state = {
     activeIndex: 0,
-  }
+  };
 
   // 이벤트 핸들러
   handleActiveIndex = (nextActiveIndex) => {
@@ -18,13 +18,13 @@ export default class AccordionList extends Component {
         activeIndex: nextActiveIndex,
       },
       () => {
-        console.log(this.state.activeIndex)
+        console.log(this.state.activeIndex);
       }
-    )
-  }
+    );
+  };
 
   render() {
-    const { activeIndex } = this.state
+    const { activeIndex } = this.state;
 
     return (
       <section>
@@ -50,6 +50,6 @@ export default class AccordionList extends Component {
           ))}
         </dl>
       </section>
-    )
+    );
   }
 }

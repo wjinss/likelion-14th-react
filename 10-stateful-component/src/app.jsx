@@ -1,17 +1,14 @@
-import accordionData from './components/accordion/data.json'
-import { LearnSection } from '@/components'
-import AccordionList from './components/accordion/accordin-list'
-import StatefulComponentClass from './components/stateful-component/class'
-import StatefulComponent from './components/stateful-component/functional'
+import { LearnSection } from "@/components";
+import AccordionList from "./components/accordion/accordin-list";
+import StatefulComponentClass from "./components/stateful-component/class";
+import StatefulComponent from "./components/stateful-component/functional";
 
 export default function App() {
-  accordionData
-
   return (
-    <LearnSection title="상태 있는/없는 컴포넌트 구성" showTitle>
+    <LearnSection title="상태 있는/없는 컴포넌트 구성">
       <AccordionList />
     </LearnSection>
-  )
+  );
 }
 
 // --------------------------------------------------------------------------
@@ -38,7 +35,7 @@ function DescriptionComponentTypes() {
         구현하는 것이 좋은 설계 원칙입니다.
       </p>
     </>
-  )
+  );
 }
 
 function ClassVsFunctionalComponentDemo() {
@@ -49,7 +46,7 @@ function ClassVsFunctionalComponentDemo() {
         aria-describedby="component-description"
         data-component-type="class"
         className="mx-auto"
-        style={{ display: 'grid' }}
+        style={{ display: "grid" }}
       />
       <p id="component-description">
         클래스 컴포넌트는 React의 전통적인 방식으로, 내부 상태(state)를 관리하고
@@ -62,7 +59,7 @@ function ClassVsFunctionalComponentDemo() {
         aria-describedby="functional-component-description"
         data-component-type="class"
         className="mx-auto"
-        style={{ display: 'grid' }}
+        style={{ display: "grid" }}
       />
       <p id="functional-component-description">
         함수형 컴포넌트는 React의 현대적인 접근 방식으로, Hook을 통해 상태
@@ -72,5 +69,5 @@ function ClassVsFunctionalComponentDemo() {
         용이하여 현재 React 개발의 표준 방식으로 자리잡았습니다.
       </p>
     </LearnSection>
-  )
+  );
 }
