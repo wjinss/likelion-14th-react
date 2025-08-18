@@ -1,7 +1,7 @@
 .spinner_V8m1 {
   transform-origin: center;
   animation: spinner_zKoa 2s linear infinite;
-
+  
   circle {
     stroke-linecap: round;
     animation: spinner_YpZS 1.5s ease-in-out infinite;
