@@ -1,5 +1,5 @@
-import { ICON_PATHS, ICON_TYPES } from './constants'
-import './style.css'
+import { ICON_PATHS, ICON_TYPES } from "./constants";
+import "./style.css";
 
 /**
  * SVG 아이콘 컴포넌트
@@ -11,18 +11,18 @@ import './style.css'
  */
 export default function SvgIcon({
   type = ICON_TYPES.UP_ARROW,
-  label = '',
+  label = "",
   size = 16,
-  color = '#525577',
+  color = "#525577",
 }) {
   // 스피너 타입인 경우, 스피너 컴포넌트 렌더링
   if (type === ICON_TYPES.SPINNER) {
-    return <Spinner label={label} size={size} color={color} />
+    return <Spinner label={label} size={size} color={color} />;
   }
 
   // 그 외 나머지 아이콘 렌더링
-  const path = ICON_PATHS[type] || ICON_PATHS[ICON_TYPES.UP_ARROW]
-  const ariaProps = label ? { 'aria-label': label } : { 'aria-hidden': 'true' }
+  const path = ICON_PATHS[type] || ICON_PATHS[ICON_TYPES.UP_ARROW];
+  const ariaProps = label ? { "aria-label": label } : { "aria-hidden": "true" };
 
   return (
     <svg
@@ -35,7 +35,7 @@ export default function SvgIcon({
     >
       <path fill={color} fillRule="evenodd" d={path} clipRule="evenodd" />
     </svg>
-  )
+  );
 }
 
 /**
@@ -45,8 +45,8 @@ export default function SvgIcon({
  * @param {number} props.size - 아이콘 크기
  * @param {string} props.color - 아이콘 색상
  */
-function Spinner({ label, size = 16, color = '#525577' }) {
-  const ariaProps = label ? { 'aria-label': label } : { 'aria-hidden': true }
+function Spinner({ label, size = 16, color = "#525577" }) {
+  const ariaProps = label ? { "aria-label": label } : { "aria-hidden": true };
 
   return (
     <svg
@@ -61,8 +61,8 @@ function Spinner({ label, size = 16, color = '#525577' }) {
         <circle cx="12" cy="12" r="9.5" fill="none" strokeWidth="3" />
       </g>
     </svg>
-  )
+  );
 }
 
 // Spinner 컴포넌트와 아이콘 타입 상수 내보내기
-export { ICON_TYPES, Spinner }
+export { ICON_TYPES, Spinner };

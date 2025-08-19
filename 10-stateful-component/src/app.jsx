@@ -1,19 +1,127 @@
-import { LearnSection } from "@/components";
-import { AccordionListClass } from "./components/accordion/accordin-list";
-import StatefulComponentClass from "./components/stateful-component/class";
-import StatefulComponent from "./components/stateful-component/functional";
+import { useState } from 'react'
+import { LearnSection } from '@/components'
+import {
+  AccordionList,
+  AccordionListClass,
+} from './components/accordion/accordion-list'
+import StatefulComponentClass from './components/stateful-component/class'
+import StatefulComponent from './components/stateful-component/functional'
+import UpdateInput from './components/update-input'
 
 export default function App() {
-  return (
-    <LearnSection title="상태 있는/없는 컴포넌트 구성">
-      <AccordionListClass />
-    </LearnSection>
-  );
+  return <FunctionalComponentStateDemo />
 }
 
 // --------------------------------------------------------------------------
 // 실습 데모
 // --------------------------------------------------------------------------
+
+const getAge = () => {
+  console.time('age state')
+  // 계산에 많은 시간이 필요한 연산
+  let ageValue = 2e9 // 약 1.7s
+  while (--ageValue > 22) {
+    // 의도적으로 계산에 많은 시간이 필요한 연산 시뮬레이션
+  }
+  console.timeEnd('age state')
+  return ageValue
+}
+
+function FunctionalComponentStateDemo() {
+  // --------------------------------------------------------------------------
+
+  // 리액트 컴포넌트의 상태는 스냇샷처럼 작동
+  // 스냅샷은 특정 시점의 데이터(불변)
+
+  // --------------------------------------------------------------------------
+
+  // 리액트 월드
+  // 렌더 트리거 -> 리액트에 컴포넌트 렌더링 요청
+  // 컴포넌트 렌더링 -> 리액트 엘리먼트 생성
+
+  // --------------------------------------------------------------------------
+
+  // 브라우저 월드
+  // DOM 커밋 -> UI에 요소 추가/수정/삭제
+  // 브라우저 렌더링(페인팅) -> 리플로우/리페인팅 (성능 이슈)
+
+  // --------------------------------------------------------------------------
+
+  const [name, setName] = useState('한창준')
+  const handleChangeName = (e) => setName(e.target.value)
+
+  // 초깃값 설정
+  // useState(initialState)
+  //
+  // 초기화 함수 (initialization)
+  // useState(() => initialState)
+  const [age, setAge] = useState(getAge)
+
+  const handleUpdateAge = () => {
+    console.log({ age })
+    const nextAge = age + 1
+    setAge(nextAge) // 상태 업데이트 함수가 실행되면 리액트의 렌더 큐에 요청이 쌓인 후, 요청이 실행되면 -> 컴포넌트 렌더링
+    console.log({ age, nextAge })
+  }
+
+  const handleTriggleAgeUpdate = () => {
+    // 상태 업데이트 함수를 실행하는 것은
+    // 리액트에게 상태 업데이트 요청
+    // render trigger
+
+    // React
+    // console.log({ age }) // 22
+    // 다음 번 렌더링
+    // setAge(age + 2) // 22 + 2 = 24
+    // setAge(age + 3) // 22 + 3 = 25
+    // setAge(age + 1) // 22 + 1 = 23
+
+    setAge((currentAge) => currentAge + 2) // 22 + 2 = 24
+    setAge((currentAge) => currentAge + 3) // 24 + 3 = 27
+    setAge((currentAge) => currentAge + 1) // 27 + 1 = 28
+
+    // queue = [ (22) => 22 + 2, (24) => 24 + 3, (27) => 27 + 1 ]
+
+    // console.log({ age }) // 22
+
+    // JavaScript
+    // let _age = 1
+    // console.log({ _age }) // 1
+    // _age = _age + 1 // 2
+    // _age = _age + 1 // 3
+    // _age = _age + 1 // 4
+    // console.log({ _age }) // 4
+  }
+
+  return (
+    <LearnSection title="함수형 컴포넌트의 상태 관리">
+      {/* <UpdateInput label="이름" value="야무" /> */}
+      {/* <UpdateInput label="직업" value="강사" /> */}
+      <div className="form-group">
+        <label htmlFor="name">이름</label>
+        <input type="text" id="name" value={name} onChange={handleChangeName} />
+      </div>
+
+      <div style={{ marginBlockStart: 30 }}>
+        <button type="button" onClick={handleUpdateAge}>
+          {name} {age}
+        </button>
+        <button type="button" onClick={handleTriggleAgeUpdate}>
+          + 3 actions
+        </button>
+      </div>
+    </LearnSection>
+  )
+}
+
+function AccordionListClassDemo() {
+  return (
+    <LearnSection title="상태 있는/없는 컴포넌트 구성">
+      <AccordionListClass onlyOneOpen />
+      <AccordionListClass />
+    </LearnSection>
+  )
+}
 
 function DescriptionComponentTypes() {
   return (
@@ -35,7 +143,7 @@ function DescriptionComponentTypes() {
         구현하는 것이 좋은 설계 원칙입니다.
       </p>
     </>
-  );
+  )
 }
 
 function ClassVsFunctionalComponentDemo() {
@@ -46,7 +154,7 @@ function ClassVsFunctionalComponentDemo() {
         aria-describedby="component-description"
         data-component-type="class"
         className="mx-auto"
-        style={{ display: "grid" }}
+        style={{ display: 'grid' }}
       />
       <p id="component-description">
         클래스 컴포넌트는 React의 전통적인 방식으로, 내부 상태(state)를 관리하고
@@ -59,7 +167,7 @@ function ClassVsFunctionalComponentDemo() {
         aria-describedby="functional-component-description"
         data-component-type="class"
         className="mx-auto"
-        style={{ display: "grid" }}
+        style={{ display: 'grid' }}
       />
       <p id="functional-component-description">
         함수형 컴포넌트는 React의 현대적인 접근 방식으로, Hook을 통해 상태
@@ -69,5 +177,5 @@ function ClassVsFunctionalComponentDemo() {
         용이하여 현재 React 개발의 표준 방식으로 자리잡았습니다.
       </p>
     </LearnSection>
-  );
+  )
 }
