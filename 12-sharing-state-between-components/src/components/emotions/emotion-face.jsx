@@ -1,3 +1,3 @@
-export default function EmotionFace() {
-  return <img src="/assets/emotions/good.jpg" alt="" width={85} height={77} />
+export default function EmotionFace({ image, label }) {
+  return <img src={image} alt={label} width={85} height={77} />;
 }

@@ -1,3 +1,5 @@
+import './style.css'
+
 /**
  * LearnSection 컴포넌트
  * @param {Object} props - 컴포넌트 속성
@@ -12,7 +14,7 @@ export default function LearnSection({
   ...restProps
 }) {
   return (
-    <section {...restProps}>
+    <section className="learn-section" {...restProps}>
       <h1 className={showTitle ? null : 'sr-only'}>{title}</h1>
       {children}
     </section>

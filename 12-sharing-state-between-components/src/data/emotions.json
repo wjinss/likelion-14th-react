@@ -1,22 +1,27 @@
 [
   {
     "key": "good",
-    "message" : "좋아요!"
+    "message": "좋아요!",
+    "image": "/assets/emotions/good.jpg"
   },
   {
     "key": "soGood",
-    "message" : "훈훈해요!"
+    "message": "훈훈해요!",
+    "image": "/assets/emotions/soGood.jpg"
   },
   {
     "key": "sad",
-    "message" : "슬퍼요!"
+    "message": "슬퍼요!",
+    "image": "/assets/emotions/sad.jpg"
   },
   {
     "key": "angry",
-    "message" : "화나요!"
+    "message": "화나요!",
+    "image": "/assets/emotions/angry.jpg"
   },
   {
     "key": "want",
-    "message" : "원해요!"
+    "message": "원해요!",
+    "image": "/assets/emotions/want.jpg"
   }
 ]
