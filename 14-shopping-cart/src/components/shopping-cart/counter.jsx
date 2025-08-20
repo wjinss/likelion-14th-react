@@ -1,4 +1,9 @@
-export default function CartCounter({ quantity, updateQuantity, inventory }) {
+export default function CartCounter({
+  id,
+  quantity,
+  onUpdateProduct,
+  inventory,
+}) {
   const isMinQuantity = quantity === 1
   const isMaxQuantity = quantity === inventory
 
@@ -9,7 +14,7 @@ export default function CartCounter({ quantity, updateQuantity, inventory }) {
         className={buttonClassNames}
         aria-label="수량 1 감소"
         disabled={isMinQuantity}
-        onClick={() => updateQuantity(-1)}
+        onClick={() => onUpdateProduct(id, -1)}
       >
         -
       </button>
@@ -19,7 +24,7 @@ export default function CartCounter({ quantity, updateQuantity, inventory }) {
         className={buttonClassNames}
         aria-label="수량 1 증가"
         disabled={isMaxQuantity}
-        onClick={() => updateQuantity(1)}
+        onClick={() => onUpdateProduct(id, 1)}
       >
         +
       </button>

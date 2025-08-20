@@ -1,13 +1,6 @@
 import CartCounter from './counter'
 
-export default function CartItem({ product, setProducts }) {
-  const handleUpdateQuantity = (amount) => {
-    setProducts((draft) => {
-      const updateProduct = draft.find((p) => p.id === product.id)
-      updateProduct.quantity += amount
-    })
-  }
-
+export default function CartItem({ product, onUpdateProduct }) {
   return (
     <li className="flex gap-2 justify-between py-2 px-0.5 text-[18px]">
       <p className="flex gap-1.5 items-center">
@@ -19,8 +12,9 @@ export default function CartItem({ product, setProducts }) {
         <strong>{product.name}</strong> {product.price.toLocaleString()}원
       </p>
       <CartCounter
+        id={product.id}
         quantity={product.quantity}
-        updateQuantity={handleUpdateQuantity}
+        onUpdateProduct={onUpdateProduct}
         inventory={product.inventory}
       />
     </li>
