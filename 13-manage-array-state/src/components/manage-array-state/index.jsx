@@ -79,6 +79,7 @@ export default function ManageArrayState() {
 
       <output>
         <strong>배열 상태</strong> : {arrayState.join(', ')}
+        {/* 배열을 역순으로 호출 <strong>배열 상태</strong> : {arrayState.toReversed().join(', ')} */}
       </output>
 
       <div role="group">
