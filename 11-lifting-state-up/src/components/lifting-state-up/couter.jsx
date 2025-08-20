@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import './counter.css'
+import "./counter.css";
 
-export default function Counter() {
-  const [count, setCount] = useState(0)
+// 무상태 (상위 컴포넌트에 상태 변경 요청)
+export default function Counter({ count = 0, setCount = () => {} }) {
+  console.log("counter 렌더링");
 
   return (
     <button
@@ -12,5 +12,5 @@ export default function Counter() {
     >
       {count}
     </button>
-  )
+  );
 }
