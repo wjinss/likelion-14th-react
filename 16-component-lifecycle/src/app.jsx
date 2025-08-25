@@ -5,7 +5,34 @@ import LifeCycleDemo from './components/lifecycle/class'
 export default function App() {
   console.log('App 렌더링')
 
-  return <LifeCycleDemo desc="라이프사이클은 특정단계의 변화를 말합니다." />
+  const [description, setDescription] = useState(
+    '라이프사이클은 특정 단계의 변화를 말합니다.'
+  )
+
+  const [isShown, setIsShown] = useState(false)
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setDescription((d) => d + '⭐️')}
+        className="button m-2"
+      >
+        설명 업데이트
+      </button>
+
+      <label className="m-5">
+        <input
+          type="checkbox"
+          checked={isShown}
+          onChange={() => setIsShown((is) => !is)}
+        />{' '}
+        라이프사이클 데모 {!isShown ? '표시' : '감춤'}
+      </label>
+
+      {isShown && <LifeCycleDemo desc={description} />}
+    </>
+  )
 }
 
 /* -------------------------------------------------------------------------- */
