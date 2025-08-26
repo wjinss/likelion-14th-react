@@ -1,11 +1,109 @@
 import { useEffect, useState } from 'react'
 import { LearnSection } from '@/components'
 
+// 1. 생성 (상태 초기화 : 지연된...)
+const getInitialCount = () => {
+  console.time('지연된 초기화')
+  const now = performance.now()
+  while (now > performance.now() - 4000) {
+    // 지연 처리 시뮬레이션
+  }
+  console.timeEnd('지연된 초기화')
+
+  return 1
+}
+
+export default function App() {
+  const [count, setCount] = useState(getInitialCount) // ... 1, 11
+
+  useEffect(
+    /* setup */
+    // 3. 마운트 이후, 이펙트 함수 실행
+    // 6. 리렌더링 이후, (정리 이후에) 다시 이펙트 함수 실행
+    () => {
+      console.log(
+        '브라우저 환경(외부 시스템) -> 이벤트 리스너 연결: 이펙트 함수 실행됨'
+      )
+
+      // 5. 클린업 함수 실행
+      //    마운트 시점이 아닌, 리렌더링 시점에 이펙트 함수보다 먼저 실행
+      return () => {
+        console.log(
+          '브라우저 환경(외부 시스템) -> 이벤트 리스너 해제: 클린업 함수 실행됨'
+        )
+      }
+    }
+    /* dependencies */
+    // []
+  )
+
+  // 2. 컴포넌트 렌더링 -> 리액트 엘리먼트(JSX) 반환
+  // 4. 컴포넌트 리렌더링 -> 리액트 엘리먼트(JSX) 반환 (변경된 상태 값을 화면에 반영)
+  console.log('컴포넌트 렌더링')
+  return (
+    <LearnSection title="훅의 실행 흐름" showTitle>
+      <button
+        type="button"
+        className="button"
+        onClick={() => setCount(count + 10)}
+      >
+        {count} {/* 1, 11 */}
+      </button>
+    </LearnSection>
+  )
+}
+
+// --------------------------------------------------------------------------
+
+// 객체형 vs. 기본형 : 참조 동일성 (왜? 이펙트 훅은 불필요하게 반복되는가?)
+function ReferenceIdentityDemo() {
+  const [count, setCount] = useState(1)
+  useEffect(() => {
+    const clearId = setInterval(() => setCount((c) => c + 1), 1000)
+
+    return () => {
+      clearInterval(clearId)
+    }
+  })
+
+  // 렌더링 될 때마다 배열 객체를 매번 새로 생성
+  // 구성이 동일해도 매번 새 배열 생성되어 다른 것으로 간주
+  const numbers = [1, 2, 3]
+
+  return (
+    <LearnSection title={'참조 동일성 (객체형 vs. 기본형)' + count} showTitle>
+      <ObjectDependency numbers={numbers} />
+    </LearnSection>
+  )
+}
+
+function ObjectDependency({ numbers }) {
+  // console.log('ObjectDependency 렌더링')
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    // console.log(numbers.join(','), 'numbers가 변경되어 실행됨')
+    // }, [numbers])
+    console.log('numbers 항목 갯수는 ' + numbers.length + '개')
+  }, [numbers.length])
+
+  const handleCountUp = () => setCount(count + 1)
+
+  return (
+    <button
+      type="button"
+      className="button my-2 px-4 text-4xl"
+      onClick={handleCountUp}
+    >
+      {count}
+    </button>
+  )
+}
+
 // 컴포넌트 렌더링 (상태 관리)
 // 사이드 이펙트 (부수 효과 : 외부 시스템에서 데이터 가져오기 : 항상 실행 (종속성 없음))
 // 컴포넌트와 외부 시스템 동기화 (부수 효과에서 상태 업데이트)
-
-export default function App() {
+function SideEffectDemo() {
   // 리액트 렌더링 프로세스 구간: 시작
 
   // 리액트 반응성 상태 변경에 따른 이펙트 함수 실행 (조건 처리) ----------
@@ -116,6 +214,20 @@ function YearControl({ year, setYear }) {
       clearInterval(clearId)
     }
   }, [year])
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      console.log({ x: e.clientX, y: e.clientY })
+    }
+
+    console.log('mousemove 이벤트 추가')
+    globalThis.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      console.log('mousemove 이벤트 제거')
+      globalThis.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [])
 
   return (
     <div role="group" className="mt-3">
