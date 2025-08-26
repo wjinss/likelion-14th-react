@@ -1,5 +1,147 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { LearnSection } from '@/components'
+import { tw } from './utils'
+
+export default function App() {
+  // const [width, setWidth] = useState(0)
+  // const [height, setHeight] = useState(0)
+
+  const [dimention, setDimention] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerWidth: width, innerHeight: height } = window
+      setDimention({ width, height })
+
+      // setWidth(window.innerWidth)
+      // setHeight(window.innerHeight)
+    }
+
+    // 리사이즈 이벤트 연결
+    // (리사이트 이벤트가 발동할 때마다, 외부 시스템인 브라우저와 리액트 앱을 동기화)
+    window.addEventListener('resize', handleResize)
+
+    // 마운트 이후, 리사이즈 실행 (상태 업데이트 -> 화면 변경)
+    handleResize()
+
+    return () => {
+      // 리사이즈 이벤트 제거
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  const { width, height } = dimention
+
+  console.count('렌더링 횟수')
+
+  return (
+    <LearnSection title="추가 실습" showTitle>
+      <output
+        className={tw(
+          'block',
+          'max-w-4xl mx-auto mt-5 p-3',
+          'rounded-xl',
+          'bg-black text-amber-500',
+          'text-2xl text-center'
+        )}
+      >
+        {width} × {height}
+        {/* {dimention.width} × {dimention.height} */}
+      </output>
+      <p className="mt-3">
+        뷰포트 크기를 조정할 때마다 너비(width)와 높이(height) 정보를 화면에
+        출력하는 이펙트를 추가합니다.
+      </p>
+    </LearnSection>
+  )
+}
+
+function EffectHookSummary() {
+  useEffect(() => {
+    console.log('App 마운트됨')
+  }, [])
+
+  const [title, setTitle] = useState('실습 ')
+  useEffect(() => {
+    console.log(`%c변경된 title 상태 값 "${title}"`, 'color: purple')
+    document.title = title
+  }, [title])
+
+  const [isShown, setIsShown] = useState(false)
+  const checkboxId = useId()
+
+  console.log('App 렌더링')
+
+  return (
+    <LearnSection
+      title={title}
+      showTitle
+      className="p-10 flex flex-col gap-4 text-indigo-600"
+    >
+      <button
+        type="button"
+        className="button"
+        onClick={() => setTitle((t) => t + '😉')}
+      >
+        상태 변경
+      </button>
+
+      <div role="group" className="flex gap-1 items-center">
+        <input
+          type="checkbox"
+          id={checkboxId}
+          checked={isShown}
+          onChange={(e) => setIsShown(e.target.checked)}
+        />
+        <label htmlFor={checkboxId}>Paragraph 마운트 / 언마운트</label>
+      </div>
+
+      {isShown && <Paragraph />}
+    </LearnSection>
+  )
+}
+
+function Paragraph() {
+  useEffect(() => {
+    console.log('Paragraph 마운트됨')
+
+    // 이벤트 리스너 추가
+    const handleClick = () => {
+      console.log('문서 클릭!!!')
+    }
+
+    console.log('이벤트 리스너 추가')
+    document.addEventListener('click', handleClick)
+
+    // 타이머 연결
+    console.log('타이머 연결')
+    const timeoutId = setInterval(() => {
+      console.count('count')
+    }, 1000)
+
+    return () => {
+      console.log('Paragraph 언마운트')
+
+      // 이벤트 리스너 제거
+      console.log('이벤트 리스너 제거')
+      document.removeEventListener('click', handleClick)
+
+      // 타이머 해제
+      console.log('타이머 해제')
+      clearInterval(timeoutId)
+    }
+  }, [])
+
+  console.log('Paragraph 렌더링')
+  return (
+    <p className="text-indigo-800">
+      클래스 컴포넌트의 "자주 사용되는 라이프사이클 메서드" 실습을 이펙트 훅으로
+      재현
+    </p>
+  )
+}
+
+// --------------------------------------------------------------------------
 
 // 1. 생성 (상태 초기화 : 지연된...)
 const getInitialCount = () => {
@@ -13,7 +155,7 @@ const getInitialCount = () => {
   return 1
 }
 
-export default function App() {
+function HookFlowDemo() {
   const [count, setCount] = useState(getInitialCount) // ... 1, 11
 
   useEffect(
