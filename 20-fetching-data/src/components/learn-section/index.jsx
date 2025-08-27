@@ -1,3 +1,5 @@
+import { tw } from '@/utils'
+
 /**
  * LearnSection 컴포넌트
  * @param {Object} props - 컴포넌트 속성
@@ -9,11 +11,14 @@ export default function LearnSection({
   title,
   showTitle = false,
   children,
+  className,
   ...restProps
 }) {
   return (
-    <section {...restProps}>
-      <h1 className={showTitle ? null : 'sr-only'}>{title}</h1>
+    <section className={tw('p-5', className)} {...restProps}>
+      <h1 className={tw('text-2xl font-semibold', [showTitle || 'sr-only'])}>
+        {title}
+      </h1>
       {children}
     </section>
   )
