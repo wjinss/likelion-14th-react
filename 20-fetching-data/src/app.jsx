@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from 'react'
+import axios from 'axios'
 import { LearnSection } from '@/components'
 import { wait } from './utils'
 
@@ -43,12 +44,83 @@ export default function App() {
         <output>렌더링 키: {key}</output>
       </div>
 
-      <AlbumAsyncIIFEDemo id={albumId} />
+      <AlbumAxiosDemo id={albumId} />
     </LearnSection>
   )
 }
 
 const ALBUM_API_URL = 'https://jsonplaceholder.typicode.com/albums'
+
+// --------------------------------------------------------------------------
+// Axios 라이브러리 활용 데모
+function AlbumAxiosDemo({ id }) {
+  console.log(`Album ${id} 렌더링`)
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    const axiosOptions = { signal: abortController.signal }
+
+    ;(async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        await wait(0.9)
+
+        const response = await axios.get(ALBUM_API_URL + '/' + id, axiosOptions)
+
+        if (!response.ok && response.status === 404) {
+          throw new Error('API 요청에 따른 응답된 데이터를 찾을 수 없습니다.')
+        }
+
+        console.log('데이터 가져오기 -> data 상태 업데이트')
+        setData(response.data)
+      } catch (error) {
+        if (error.name === 'CanceledError') return
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    })()
+
+    return () => {
+      abortController.abort()
+    }
+  }, [id])
+
+  if (loading) {
+    return (
+      <p
+        role="status"
+        aria-live="polite"
+        className="text-indigo-300 font-semibold text-2xl"
+      >
+        로딩 중...
+      </p>
+    )
+  }
+
+  if (error) {
+    return (
+      <p
+        role="alert"
+        aria-live="assertive"
+        className="text-red-600 font-semibold text-2xl"
+      >
+        오류 발생!! {error.message}
+      </p>
+    )
+  }
+
+  return (
+    <p className="text-indigo-600 font-semibold text-2xl">
+      앨범 타이틀 : {data?.id ?? 0} | {data?.title ?? 'Album Title'}
+    </p>
+  )
+}
 
 // --------------------------------------------------------------------------
 // 비동기 함수 + IIFE 패턴 데모
