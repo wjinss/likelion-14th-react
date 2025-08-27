@@ -1,4 +1,9 @@
-import { useEffect, useState } from 'react'
+import {
+  Component,
+  UNSAFE_componentWillMount,
+  useEffect,
+  useState,
+} from 'react'
 import { LearnSection } from '@/components'
 
 export default function App() {
@@ -8,8 +13,26 @@ export default function App() {
     <LearnSection title="랜덤 카운트 업">
       <BugComponent />
       <Counter value={2} />
+      {/* <LegacyComponent /> */}
     </LearnSection>
   )
+}
+
+// --------------------------------------------------------------------------
+
+class LegacyComponent extends Component {
+  render() {
+    return <div>레거시 컴포넌트</div>
+  }
+
+  // 더 이상 사용되지 않는 라이프사이클 메서드
+  UNSAFE_componentWillMount() {
+    console.log('컴포넌트 마운트 직전에 실행됨!\n(will mount === before mount)')
+  }
+
+  componentDidMount() {
+    console.log('마운트 이후 실행, mounted')
+  }
 }
 
 // --------------------------------------------------------------------------
@@ -46,7 +69,7 @@ function Counter({ value = 0 }) {
 // 이펙트 2회 실행 => 부수 효과 클린업(정리)를 했나? 확인
 
 function BugComponent() {
-  // console.log('BugComponent 렌더링')
+  console.log('BugComponent 렌더링')
 
   const [count, setCount] = useState(9)
 
