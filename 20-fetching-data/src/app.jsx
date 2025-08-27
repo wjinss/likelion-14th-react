@@ -65,11 +65,13 @@ function Album({ id }) {
   const [data, setData] = useState(null)
 
   // 부수 효과 관리
-  // - mount
+  // - rendering [1]
+  // - mount [1]
   // - effect ([1]: ignore = false)
-  // - unmount
+  // - unmount [1]
+  // - rendering [2]
   // - cleanup ([1]: ignore = true)
-  // - remount
+  // - remount [2]
   // - response ([1]: ignore = true) - view update ignore
   // - effect ([2]: ignore = false)
   // - response ([2]: ignore = false) - view update
@@ -106,7 +108,9 @@ function Album({ id }) {
         // 실제 데이터 상태 업데이트 반영은 1회로 제한할 수 없을까?
         // - 1회 요청 -> 2회 요청
         // - 1회 데이터 상태 업데이트(무시: ignore) -> 2회 데이터 상태 업데이트(적용)
+
         if (!ignore) {
+          console.log('데이터 가져오기 -> data 상태 업데이트')
           setData(responseData)
         }
       })
