@@ -109,10 +109,7 @@ function FetchingPostDataDemo({ postId }) {
 
         const response = await fetch(url, options)
 
-        console.log(response)
-
         if (!response.ok && response.status === 404) {
-          // throw new Error(response.statusText)
           throw new Error(
             `요청된 포스트 ${postId}는 존재하지 않는 리소스입니다.`
           )
@@ -125,18 +122,18 @@ function FetchingPostDataDemo({ postId }) {
           draft.pending = false
         })
       } catch (error) {
-        console.error(error)
+        if (error.name === 'AbortError') return
 
         setState((draft) => {
           draft.error = error
           draft.pending = false
         })
       }
-
-      return () => {
-        controller.abort()
-      }
     })()
+
+    return () => {
+      controller.abort()
+    }
   }, [postId, setState])
 
   if (state.pending) {
