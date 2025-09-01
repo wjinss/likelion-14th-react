@@ -3,13 +3,22 @@ import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import gsap from 'gsap'
 import VanillaTilt, { type HTMLVanillaTiltElement } from 'vanilla-tilt'
-import { LearnSection } from '@/components'
+import { AutoFocusInput, LearnSection } from '@/components'
+import ClassRef from './components/class-ref'
 
 export default function App() {
   const [visible, setVisible] = useState<boolean>(true)
 
   return (
     <LearnSection title="DOM 참조">
+      <ClassRef />
+
+      <AutoFocusInput
+        type="checkbox"
+        containerProps={{ title: '컨테이너' }}
+        label="자동 초점 이동 인풋"
+        shouldFocus={true}
+      />
       <button
         className="button mb-5"
         type="button"
