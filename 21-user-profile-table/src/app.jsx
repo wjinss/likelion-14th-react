@@ -160,3 +160,43 @@ function UserProfileTable() {
     </table>
   )
 }
+
+;() => {
+  function TestFetch() {
+    const [isPending, setIsPending] = useState(false)
+    const [error, setError] = useState(null)
+    const [data, setData] = useState(null)
+
+    useEffect(() => {
+      setIsPending(true)
+      setError(error)
+
+      const dataControler = new AbortController()
+      async function testFetchFn() {
+        try {
+          const response = await fetch('대충 url 적는 곳', {
+            signal: dataControler.signal,
+          })
+
+          if (!response.ok && response.status === 404) {
+            throw new Error('에러에유')
+          }
+
+          const userData = await response.json()
+          setData(userData)
+        } catch (error) {
+          if (error.name === 'AbortError') return
+          setError(error)
+        } finally {
+          setIsPending(false)
+        }
+      }
+
+      testFetchFn()
+
+      return () => {
+        dataControler.abort()
+      }
+    }, [])
+  }
+}

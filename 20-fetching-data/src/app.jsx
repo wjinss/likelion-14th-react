@@ -604,3 +604,43 @@ function AlbumIgnoreDemo({ id }) {
     </p>
   )
 }
+
+;() => {
+  function Test() {
+    const [pending, setPending] = useState(false)
+    const [error, setError] = useState(null)
+    const [data, setData] = useState(null)
+
+    useEffect(() => {
+      const abortController = new AbortController()
+      const fetchOption = { signal: abortController.signal }
+
+      async function fetchFn() {
+        try {
+          setPending(true)
+          setError(null)
+
+          const response = await fetch('대충 url 적는 곳', fetchOption)
+
+          if (!response.ok && response.status === 404) {
+            throw new Error('에러났어유')
+          }
+
+          const responseData = await response.json()
+          setData(responseData)
+        } catch (error) {
+          if (error.name === 'AbortError') return
+          setError(error)
+        } finally {
+          setPending(false)
+        }
+      }
+
+      fetchFn()
+
+      return () => {
+        abortController.abort()
+      }
+    }, [id])
+  }
+}
