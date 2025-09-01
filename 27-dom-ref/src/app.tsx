@@ -1,12 +1,68 @@
 import { useEffect, useRef, useState } from 'react'
+import confetti from 'canvas-confetti'
 import { LearnSection } from '@/components'
-import SearchQueryDemo from './components/search-posts'
 
 export default function App() {
   return (
     <LearnSection title="DOM 참조" style={{ flexDirection: 'column' }}>
-      <SearchQueryDemo />
+      <ConfettiDemo />
     </LearnSection>
+  )
+}
+
+// --------------------------------------------------------------------------
+
+interface Size {
+  width: number
+  height: number
+}
+
+const getSize = (): Size => ({
+  width: window.innerWidth,
+  height: window.innerHeight,
+})
+
+function ConfettiDemo() {
+  const [size, setSize] = useState<Size>(getSize)
+
+  useEffect(() => {
+    const handleResize = () => setSize(getSize)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const handleConfetti = () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // confetti 라이브러리에 canvas DOM 전달
+    confetti.create(canvas, { resize: true })({
+      particleCount: 190,
+      spread: 180,
+      origin: { y: 0.5 },
+    })
+  }
+
+  return (
+    <>
+      <button type="button" className="button" onClick={handleConfetti}>
+        폭죽 효과
+      </button>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          zIndex: -1,
+          top: 0,
+          left: 0,
+          ...size,
+        }}
+      />
+    </>
   )
 }
 
@@ -23,11 +79,6 @@ function DOMRefDemo() {
 
   useEffect(() => {
     const pElement = pRef.current
-
-    // if (pElement) {
-    //   pElement.setAttribute('tabindex', '-1')
-    //   pElement.focus()
-    // }
 
     pElement?.setAttribute('tabindex', '-1')
     pElement?.focus()
