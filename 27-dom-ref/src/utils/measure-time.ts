@@ -11,7 +11,7 @@
  * })
  * // 출력: "데이터 로딩 : 123ms"
  */
-export default async function measureTime(label, callback) {
+export default async function measureTime(label: string, callback: () => void) {
   const startTime = Date.now()
   await callback?.()
   const endTime = Date.now()

@@ -12,6 +12,6 @@
  * // 2초 동안 대기
  * await wait(2)
  */
-export default function wait(delay = 1) {
+export default function wait(delay: number = 1) {
   return new Promise((resolve) => setTimeout(resolve, delay * 1000))
 }

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { fetchDataByQuery } from './api'
+import { FormEvent, useEffect, useState } from 'react'
+import { type Post, fetchDataByQuery } from './api'
 import Divider from './divider'
-import Error from './error'
+import ErrorComponent from './error'
 import Loading from './loading'
 import SearchController from './search-controller'
 import SearchForm from './search-form'
@@ -10,9 +10,9 @@ import Status from './status'
 import { getQueryFromLocation, queryPushInHistory } from './utils'
 
 export default function SearchQueryDemo() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [data, setData] = useState([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
+  const [data, setData] = useState<Post[] | null>(null)
 
   // 검색 쿼리 초깃값을 현재 URL의 q 파라미터에서 가져오도록 설정
   // 참고: https://developer.mozilla.org/ko/docs/Web/API/URLSearchParams
@@ -25,7 +25,7 @@ export default function SearchQueryDemo() {
   // /?q=성공
   // /?q=실패
 
-  const [query, setQuery] = useState(getQueryFromLocation)
+  const [query, setQuery] = useState<string>(getQueryFromLocation)
 
   // 브라우저의 뒤로가기/앞으로 가기 버튼을 눌렀을 때(히스토리 이동에 반응해, 리액트 앱과 동기화)
   // 참고: https://developer.mozilla.org/ko/docs/Web/API/Window/popstate_event
@@ -47,7 +47,9 @@ export default function SearchQueryDemo() {
 
     fetchDataByQuery(query, { signal: abortController.signal })
       .then((result) => {
-        setData(Array.isArray(result) ? result : [])
+        if (result && !(result instanceof Error)) {
+          setData(result)
+        }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false))
@@ -58,11 +60,11 @@ export default function SearchQueryDemo() {
   }, [query])
 
   // 검색 폼 제출 시 쿼리 변경
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const formData = new FormData(e.currentTarget)
-    const nextQuery = formData.get('search')
+    const formData = new FormData(e.currentTarget) // <form>
+    const nextQuery = formData.get('search') as string
 
     // URL 변경 시, query 상태 업데이트
     // JavaScript를 사용해 URL을 바꿀 때(사용자 액션에 반응해, 히스토리에 푸시)
@@ -76,7 +78,7 @@ export default function SearchQueryDemo() {
   }
 
   // 버튼 클릭으로 쿼리 변경
-  const handleSearch = (nextQuery) => {
+  const handleSearch = (nextQuery: string) => {
     // URL 변경 시, query 상태 업데이트
     // ...
     queryPushInHistory(nextQuery)
@@ -103,9 +105,9 @@ export default function SearchQueryDemo() {
 
       {loading && <Loading>검색 결과 로딩 중...</Loading>}
       {error && (
-        <Error>
+        <ErrorComponent>
           <strong>오류 발생!</strong> {String(error.message || error)}
-        </Error>
+        </ErrorComponent>
       )}
       {hasData && data.length === 0 && (
         <Status>

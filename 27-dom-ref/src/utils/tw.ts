@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import clsx, { type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 /**
@@ -8,6 +8,6 @@ import { twMerge } from 'tailwind-merge'
  * @param {...(string|object|array)} classNames - 병합할 클래스명들
  * @returns {string} 병합된 클래스명 문자열
  */
-export default function tw(...classNames) {
+export default function tw(...classNames: ClassValue[]) {
   return twMerge(clsx(...classNames))
 }

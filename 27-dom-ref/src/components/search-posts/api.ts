@@ -3,7 +3,7 @@ import { fetchData, makeEndpoint } from './utils'
 
 // API로 가져오는 데이터 타입 정의
 
-interface User {
+export interface User {
   id: number
   name: string
   username: string
@@ -26,7 +26,7 @@ interface User {
   }
 }
 
-interface Post {
+export interface Post {
   id: number
   userId: number
   title: string
