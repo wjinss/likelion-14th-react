@@ -1,16 +1,185 @@
+import { useGSAP } from '@gsap/react'
 import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
+import gsap from 'gsap'
+import VanillaTilt, { type HTMLVanillaTiltElement } from 'vanilla-tilt'
 import { LearnSection } from '@/components'
 
 export default function App() {
+  const [visible, setVisible] = useState<boolean>(true)
+
   return (
-    <LearnSection title="DOM 참조" style={{ flexDirection: 'column' }}>
-      <ConfettiDemo />
+    <LearnSection title="DOM 참조">
+      <button
+        className="button mb-5"
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+      >
+        {visible ? '감춤' : '표시'}
+      </button>
+      {visible && <GsapDemoUseGSAP />}
+
+      <div className="box size-20 bg-red-500 text-white grid place-content-center">
+        box 1
+      </div>
+      <div className="box size-20 bg-amber-500 text-white grid place-content-center">
+        box 2
+      </div>
     </LearnSection>
   )
 }
 
 // --------------------------------------------------------------------------
+// GSAP
+
+gsap.registerPlugin(useGSAP)
+
+function GsapDemoUseGSAP() {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      // 선택자
+      gsap.to('.box', { x: 360 })
+    },
+    { scope: containerRef }
+  )
+
+  return (
+    <div ref={containerRef}>
+      <figure className="box size-20 bg-black text-white grid place-content-center">
+        박스
+      </figure>
+    </div>
+  )
+}
+
+function GsapDemoRefCallback() {
+  return (
+    <div
+      ref={(element) => {
+        if (element) {
+          const timeline = gsap.timeline({
+            repeat: -1,
+            defaults: { duration: 1.2, ease: 'power2.inOut' },
+          })
+
+          timeline
+            .to(element, { x: window.innerWidth - 180 - 20 })
+            .to(element, { y: window.innerHeight - 60 - 20 })
+            .to(element, { x: 0 })
+            .to(element, { y: 0 })
+        }
+      }}
+    >
+      <abbr title="Green Sock Animation Platform" className="text-5xl">
+        GSAP
+      </abbr>
+    </div>
+  )
+}
+
+function GsapDemo() {
+  const gsapRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const element = gsapRef.current
+
+    if (element) {
+      const timeline = gsap.timeline({
+        repeat: -1,
+        defaults: { duration: 1.2, ease: 'power2.inOut' },
+      })
+
+      timeline
+        .to(element, { x: window.innerWidth - 180 - 20 })
+        .to(element, { y: window.innerHeight - 60 - 20 })
+        .to(element, { x: 0 })
+        .to(element, { y: 0 })
+    }
+
+    return () => {}
+  })
+
+  return (
+    <div ref={gsapRef}>
+      <abbr title="Green Sock Animation Platform" className="text-5xl">
+        GSAP
+      </abbr>
+    </div>
+  )
+}
+
+// --------------------------------------------------------------------------
+// Vanilla Tilt Effect
+
+const TILT_OPTIONS = {
+  'glare': true,
+  'max-glare': 0.7,
+  'scale': 1.2,
+}
+
+function VanillaTiltEffectDemo() {
+  const [boxes] = useState(Array(3).fill(null))
+
+  // 1. ref 속성 + 콜백(callback) 함수 설정 방법
+  const _boxRefCallback = (element: HTMLElement) => {
+    console.log('바닐라 틸티 3D 이펙트 설정')
+    VanillaTilt.init(element, TILT_OPTIONS)
+
+    // 클린업 (React 19+)
+    return () => {
+      console.log('바닐라 틸티 3D 이펙트 정리')
+      ;(element as HTMLVanillaTiltElement).vanillaTilt.destroy()
+    }
+  }
+
+  // 2.  ref 속성 + useRef 훅 + useEffect 훅 연결하는 방법
+  const boxesRef = useRef<HTMLElement[]>([])
+
+  useEffect(() => {
+    const boxElements = boxesRef.current
+
+    if (boxElements.length > 0) {
+      for (const element of boxElements) {
+        if (element) {
+          console.log('바닐라 틸티 3D 이펙트 설정')
+          console.log(element)
+          VanillaTilt.init(element, TILT_OPTIONS)
+        }
+      }
+    }
+
+    return () => {
+      if (boxElements.length > 0) {
+        console.log('바닐라 틸티 3D 이펙트 정리')
+        for (const element of boxElements) {
+          ;(element as HTMLVanillaTiltElement).vanillaTilt?.destroy()
+        }
+      }
+    }
+  }, [])
+
+  return (
+    <div role="group" className="text-4xl space-y-2">
+      {boxes.map((_, index) => (
+        <figure
+          key={index}
+          // ref={_boxRefCallback}
+          ref={(element) => {
+            if (element) boxesRef.current.push(element)
+          }}
+          className="size-40 bg-black text-white grid place-content-center uppercase"
+        >
+          box {index + 1}
+        </figure>
+      ))}
+    </div>
+  )
+}
+
+// --------------------------------------------------------------------------
+// Canvas Confetti
 
 interface Size {
   width: number

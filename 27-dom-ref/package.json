@@ -15,12 +15,15 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "canvas-confetti": "^1.9.3",
+    "gsap": "^3.13.0",
     "immer": "^10.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-error-boundary": "^6.0.0",
-    "use-immer": "^0.11.0"
+    "use-immer": "^0.11.0",
+    "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
