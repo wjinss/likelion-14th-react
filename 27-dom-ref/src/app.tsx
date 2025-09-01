@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LearnSection } from '@/components'
 
 export default function App() {
   return (
-    <LearnSection title="DOM 참조">
+    <LearnSection title="DOM 참조" style={{ flexDirection: 'column' }}>
       <DOMRefDemo />
     </LearnSection>
   )
@@ -12,13 +12,21 @@ export default function App() {
 // --------------------------------------------------------------------------
 
 function DOMRefDemo() {
-  const [attach, setAttach] = useState<boolean>(false)
+  const [attach, setAttach] = useState<boolean>(true)
 
-  const pRef = useRef(null)
-  const intervalRef = useRef()
+  // DOM 참조 (컴포넌트 렌더링 결과로 실제 DOM 요소 접근/조작)
+  const pRef = useRef<HTMLParagraphElement>(null)
+
+  // 값 참조 (웹 API의 타이머 값 참조)
+  const intervalRef = useRef<Timeout>(undefined)
 
   useEffect(() => {
     const pElement = pRef.current
+
+    // if (pElement) {
+    //   pElement.setAttribute('tabindex', '-1')
+    //   pElement.focus()
+    // }
 
     pElement?.setAttribute('tabindex', '-1')
     pElement?.focus()

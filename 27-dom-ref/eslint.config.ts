@@ -30,6 +30,7 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         ...globals.node,
+        Timeout: 'readonly',
       },
     },
   },
