@@ -1,14 +1,53 @@
 import { useCallback, useState } from 'react'
 import { LearnSection } from '@/components'
-import { useInput, useToggleState } from '@/hooks'
+import { useArray, useInput, useToggleState } from '@/hooks'
 import { tw } from './utils'
 
 export default function App() {
+  const arrayData = useArray<number>([3, 6, 9])
+
+  return (
+    <div className="p-20">
+      <div role="group" className="my-10 flex gap-3 flex-wrap">
+        <button type="button" onClick={() => arrayData.set([9, 36, 81])}>
+          [9, 36, 81]로 설정
+        </button>
+        <button type="button" onClick={() => arrayData.push(12)}>
+          뒤에 12 추가
+        </button>
+        <button type="button" onClick={() => arrayData.unshift(11, 73)}>
+          앞에 11, 73 추가
+        </button>
+        <button type="button" onClick={() => arrayData.replace(1, 16)}>
+          두 번째 요소를 16으로 교체
+        </button>
+        <button type="button" onClick={() => arrayData.replace(2, 100)}>
+          세 번째 요소를 100으로 교체
+        </button>
+        <button type="button" onClick={() => arrayData.filter((n) => n < 24)}>
+          24보다 작은 수만 필터링
+        </button>
+        <button type="button" onClick={() => arrayData.remove(2)}>
+          세 번째 요소 제거
+        </button>
+        <button type="button" onClick={arrayData.clear}>
+          모두 제거
+        </button>
+        <button type="button" onClick={arrayData.reset}>
+          초기화
+        </button>
+      </div>
+      <output className="text-3xl">{arrayData.array?.join(', ')}</output>
+    </div>
+  )
+}
+
+// --------------------------------------------------------------------------
+
+function UsingCustomHooksDemo() {
   const inputProps = useInput<number>(99)
 
   const [darkTheme, toggleDarkTheme] = useToggleState(true)
-
-  // toggleDarkTheme 현재 렌더링에서와 다음 렌더링에서 동일한 함수이다. ✅ ❌
 
   const themeClassNames = darkTheme ? 'bg-slate-950 text-white' : ''
   const checkeboxLabel = darkTheme ? '라이트 테마 전환' : '다크 테마 전환'
