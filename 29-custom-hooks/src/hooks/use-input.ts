@@ -1,10 +1,14 @@
-import { type ChangeEvent, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react'
 
-export default function useInput<Type = string>(initialValue: Type) {
-  const [value, setValue] = useState<Type>(initialValue)
+export default function useInput<T = string>(initialValue: T) {
+  const [value, setValue] = useState<T>(initialValue)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value as Type)
+    setValue(e.target.value as T)
   }
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
 
   return { value, onChange }
 }
