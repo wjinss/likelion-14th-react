@@ -1,8 +1,39 @@
-import { type FormEvent, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useState } from 'react'
 import { createUser, deleteUser } from '@/api/users'
-import { useMutation } from '@/hooks'
+import { useMutation, usePersist } from '@/hooks'
 
-export default function MutationExample() {
+export default function NicknamePersistExample() {
+  const [nickname, setNickname, { remove }] = usePersist<string>(
+    '@euid/nickname',
+    ''
+  )
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value)
+  }
+
+  return (
+    <main className="max-w-sm mx-auto mt-10 p-6 bg-white rounded shadow">
+      <h2 className="text-lg font-bold mb-4">닉네임 기억하기</h2>
+      <input
+        type="text"
+        className="border px-3 py-2 rounded w-full mb-2 focus:ring-2 focus:ring-blue-400"
+        placeholder="닉네임을 입력하세요"
+        value={nickname}
+        onChange={handleChange}
+      />
+      <div className="mt-3 text-gray-700">
+        <span className="font-semibold">저장된 닉네임:</span>{' '}
+        <span className="text-blue-600">{nickname || '없음'}</span>
+        <button type="button" onClick={remove} className="ml-2">
+          저장된 닉네임 삭제
+        </button>
+      </div>
+    </main>
+  )
+}
+
+function MutationExample() {
   // 생성용 상태
   const [name, setName] = useState('')
 
