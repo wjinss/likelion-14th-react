@@ -1,14 +1,13 @@
 import {
-  ChangeEvent,
   type ComponentProps,
   type FormEvent,
   type ReactNode,
   useId,
-  useState,
 } from 'react'
 import { type ClassValue } from 'clsx'
 import { Eye, EyeOff, HelpCircle } from 'lucide-react'
 import { useImmer } from 'use-immer'
+import { useInput, useToggleState } from './hooks'
 import { tw } from './utils'
 
 // 이메일 검사 함수(기능)
@@ -35,31 +34,29 @@ const validatePassword = (value: string): string => {
 export default function LoginForm() {
   // 폼 상태 관리 (실시간 검증 필요)
 
-  const [emailValue, setEmailValue] = useState<string>('')
-  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setEmailValue(value)
+  const emailProps = useInput<string>('', {
+    onChange(value: string) {
+      if (submitted) {
+        const errorMessage = validateEmail(value)
+        setErrors((draft) => {
+          draft.email = errorMessage
+        })
+      }
+    },
+  })
 
-    if (submitted) {
-      setErrors((draft) => {
-        draft.email = validateEmail(value)
-      })
-    }
-  }
+  const passwordProps = useInput<string>('', {
+    onChange(value: string) {
+      if (submitted) {
+        const errorMessage = validatePassword(value)
+        setErrors((draft) => {
+          draft.password = errorMessage
+        })
+      }
+    },
+  })
 
-  const [passwordValue, setPasswordValue] = useState<string>('')
-  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setPasswordValue(value)
-    if (submitted) {
-      setErrors((draft) => {
-        draft.password = validatePassword(value)
-      })
-    }
-  }
-
-  const [showPassword, setShowPassword] = useState<boolean>(false)
-  const handleTogglePassword = () => setShowPassword((p) => !p)
+  const [showPassword, { toggle }] = useToggleState(false)
 
   // 오류 검토하기 위한 상태 설정
   const [errors, setErrors] = useImmer({
@@ -68,23 +65,23 @@ export default function LoginForm() {
   })
 
   // 제출 여부를 확인하기 위한 상태 설정
-  const [submitted, setSubmitted] = useState<boolean>(false)
+  const [submitted, { on: onSubmitted }] = useToggleState(false)
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const emailResult = validateEmail(emailValue)
-    const passwordResult = validatePassword(passwordValue)
+    const emailResult = validateEmail(emailProps.value as string)
+    const passwordResult = validatePassword(passwordProps.value as string)
 
     // 유효성 검사
     if (emailResult.length === 0 && passwordResult.length === 0) {
       globalThis.alert('로그인 성공!')
-      console.log({ email: emailValue, password: passwordValue })
+      console.log({ email: emailProps.value, password: passwordProps.value })
     } else {
       setErrors({ email: emailResult, password: passwordResult })
     }
 
-    setSubmitted(true)
+    onSubmitted()
   }
 
   return (
@@ -97,13 +94,13 @@ export default function LoginForm() {
     >
       <EmailInput
         helpMessage="메일 주소는 @likelion.dev로 끝나야 합니다."
-        inputProps={{ value: emailValue, onChange: handleChangeEmail }}
+        inputProps={emailProps}
         error={errors.email}
       />
       <PasswordInput
         showPassword={showPassword}
-        buttonProps={{ onClick: handleTogglePassword }}
-        inputProps={{ value: passwordValue, onChange: handleChangePassword }}
+        buttonProps={{ onClick: toggle }}
+        inputProps={passwordProps}
         error={errors.password}
       />
       <SubmitButton />
