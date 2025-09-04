@@ -1,6 +1,12 @@
-import { useCallback, useState } from 'react'
+import { type FormEvent, useCallback, useRef, useState } from 'react'
 import { LearnSection } from '@/components'
-import { useArray, useInput, useQuery, useToggleState } from '@/hooks'
+import {
+  useArray,
+  useInput,
+  useMutation,
+  useQuery,
+  useToggleState,
+} from '@/hooks'
 import { tw } from './utils'
 
 const URL = {
@@ -9,7 +15,121 @@ const URL = {
   comments: 'http://localhost:4000/comments',
 }
 
-export default function App() {
+interface User {
+  id: number
+  name: string
+  username: string
+  email: string
+  address: {
+    street: string
+    suite: string
+    city: string
+    zipcode: string
+  }
+  phone: string
+  company: {
+    name: string
+    catchPhrase: string
+    business: string
+  }
+}
+
+// 데이터 뮤테이션 비동기 함수
+const createUser = async (name: string) =>
+  fetch('http://localhost:4000/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name }),
+  })
+
+export default function MutationExample() {
+  const [name, setName] = useState<string>('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const mutation = useMutation<string, User>({ mutateFn: createUser })
+  const { status, error, data, isLoading, hasError, isSuccess } = mutation
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!name.trim()) {
+      alert('이름을 작성하세요!')
+      inputRef.current?.focus()
+      return
+    }
+
+    await mutation.mutate(name)
+
+    setName('')
+  }
+
+  return (
+    <main className="max-w-md mx-auto p-8">
+      <h2 className="text-xl font-bold mb-4">useMutation 실습</h2>
+      <form onSubmit={handleSubmit} className="mb-6 flex flex-col gap-3">
+        <label htmlFor="name" className="font-semibold">
+          이름 입력
+        </label>
+        <input
+          ref={inputRef}
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="이름을 입력하세요"
+          autoComplete="off"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !name.trim()}
+          className={`px-4 py-2 border-1 border-blue-600 rounded font-semibold transition-colors
+            ${
+              isLoading
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-400'
+            }`}
+          aria-busy={isLoading}
+        >
+          {isLoading ? '등록중...' : '등록'}
+        </button>
+        <button
+          type="button"
+          onClick={mutation.reset}
+          className="px-4 py-2 border-1 border-gray-300 rounded bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+        >
+          초기화
+        </button>
+      </form>
+
+      <section aria-live="polite" className="mb-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="font-semibold">상태:</span>
+          <span>{status}</span>
+        </div>
+        {hasError && (
+          <div className="text-red-600" role="alert">
+            <span className="font-semibold">에러:</span> {error?.message}
+          </div>
+        )}
+        {isSuccess && (
+          <div className="text-green-600">
+            <span className="font-semibold">성공!</span> 사용자 등록됨
+          </div>
+        )}
+      </section>
+
+      <section>
+        <span className="font-semibold">응답 데이터:</span>
+        <pre className="bg-gray-100 p-3 rounded text-xs mt-2 max-h-40 overflow-auto">
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      </section>
+    </main>
+  )
+}
+
+function UseQueryDemo() {
   const [selectedUrl, setSelectedUrl] = useState<string>(URL.users)
   const queryData = useQuery(selectedUrl)
 
@@ -153,7 +273,7 @@ function UseArrayDemo() {
 // --------------------------------------------------------------------------
 
 function UsingCustomHooksDemo() {
-  const inputProps = useInput<number>(99)
+  const inputProps = useInput(99)
 
   const [darkTheme, toggleDarkTheme] = useToggleState(true)
 
@@ -195,7 +315,7 @@ function UsingCustomHooksDemo() {
 }
 
 function CustomHookDemo() {
-  const inputProps = useInput<string>('reusable logic')
+  const inputProps = useInput('reusable logic')
 
   const [toggle, setToggle] = useToggleState(true)
   const language = toggle ? 'ko' : 'en'
