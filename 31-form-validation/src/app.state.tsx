@@ -1,56 +1,110 @@
-import { type ComponentProps, type ReactNode, useId } from 'react'
-import { type FieldValues, type SubmitHandler, useForm } from 'react-hook-form'
+import {
+  ChangeEvent,
+  type ComponentProps,
+  type FormEvent,
+  type ReactNode,
+  useId,
+  useState,
+} from 'react'
 import { type ClassValue } from 'clsx'
 import { Eye, EyeOff, HelpCircle } from 'lucide-react'
-import { useToggleState } from './hooks'
+import { useImmer } from 'use-immer'
 import { tw } from './utils'
 
+// 이메일 검사 함수(기능)
+const validateEmail = (value: string): string => {
+  value = value.trim()
+  if (!value) return '이메일 입력이 필요합니다.'
+  if (!value.endsWith('@likelion.dev')) {
+    return '메일 주소는 @likelion.dev로 끝나야 합니다.'
+  }
+  return ''
+}
+
+// 패스워드 검사 함수(기능)
+const validatePassword = (value: string): string => {
+  value = value.trim()
+  if (!value) return '패스워드 입력이 필요합니다.'
+  if (!/[a-z]/.test(value)) return '영문 소문자가 하나 이상 포함되어야 합니다.'
+  if (!/[A-Z]/.test(value)) return '영문 대문자가 하나 이상 포함되어야 합니다.'
+  if (!/[0-9]/.test(value)) return '숫자가 하나 이상 포함되어야 합니다.'
+  if (value.length < 8) return '8자리 이상 입력이 되어야 합니다.'
+  return ''
+}
+
 export default function LoginForm() {
-  const [showPassword, { toggle }] = useToggleState(false)
+  // 폼 상태 관리 (실시간 검증 필요)
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm()
+  const [emailValue, setEmailValue] = useState<string>('')
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setEmailValue(value)
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
+    if (submitted) {
+      setErrors((draft) => {
+        draft.email = validateEmail(value)
+      })
+    }
+  }
+
+  const [passwordValue, setPasswordValue] = useState<string>('')
+  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPasswordValue(value)
+    if (submitted) {
+      setErrors((draft) => {
+        draft.password = validatePassword(value)
+      })
+    }
+  }
+
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const handleTogglePassword = () => setShowPassword((p) => !p)
+
+  // 오류 검토하기 위한 상태 설정
+  const [errors, setErrors] = useImmer({
+    email: '',
+    password: '',
+  })
+
+  // 제출 여부를 확인하기 위한 상태 설정
+  const [submitted, setSubmitted] = useState<boolean>(false)
+
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const emailResult = validateEmail(emailValue)
+    const passwordResult = validatePassword(passwordValue)
+
+    // 유효성 검사
+    if (emailResult.length === 0 && passwordResult.length === 0) {
+      globalThis.alert('로그인 성공!')
+      console.log({ email: emailValue, password: passwordValue })
+    } else {
+      setErrors({ email: emailResult, password: passwordResult })
+    }
+
+    setSubmitted(true)
   }
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleLogin}
       className={tw('flex flex-col gap-6 max-w-xl mx-auto p-6')}
       aria-label="로그인 폼"
       autoComplete="off"
       noValidate
     >
       <EmailInput
-        error={errors.email?.message as string}
-        inputProps={register('email', {
-          required: { value: true, message: '이메일 입력은 필수입니다.' },
-          validate: (value: string) => {
-            if (!value.endsWith('@likelion.dev'))
-              return '메일 주소는 @likelion.dev로 끝나야 합니다.'
-          },
-        })}
+        helpMessage="메일 주소는 @likelion.dev로 끝나야 합니다."
+        inputProps={{ value: emailValue, onChange: handleChangeEmail }}
+        error={errors.email}
       />
       <PasswordInput
         showPassword={showPassword}
-        buttonProps={{ onClick: toggle }}
-        error={errors.password?.message as string}
-        inputProps={register('password', {
-          required: { value: true, message: '패스워드 입력은 필수입니다.' },
-          validate: (value: string) => {
-            if (!/[a-z]/.test(value))
-              return '영문 소문자를 하나 이상 포함해야 합니다.'
-            if (!/[A-Z]/.test(value))
-              return '영문 대문자를 하나 이상 포함해야 합니다.'
-            if (!/[0-9]/.test(value)) return '숫자를 하나 이상 포함해야 합니다.'
-            if (value.length < 8) return '8자리 이상 입력해야 합니다.'
-          },
-        })}
+        buttonProps={{ onClick: handleTogglePassword }}
+        inputProps={{ value: passwordValue, onChange: handleChangePassword }}
+        error={errors.password}
       />
       <SubmitButton />
     </form>
