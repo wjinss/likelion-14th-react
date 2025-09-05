@@ -1,7 +1,10 @@
+import { AuthResponse } from '@supabase/supabase-js'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff } from 'lucide-react'
+import { toast } from 'sonner'
 import { useToggleState } from '@/hooks'
-import { tw } from '@/utils'
+import supabase from '@/libs/supabase'
+import { navigate, tw } from '@/utils'
 
 // 폼 입력값 타입 정의
 type SignupForm = {
@@ -19,6 +22,7 @@ export default function SignUpPage() {
     handleSubmit, // 제출 이벤트 핸들러
     watch, // 특정 필드 값 실시간 참조
     formState: { errors, isSubmitting }, // 에러 및 제출 중 상태
+    reset, // 폼 초기화 함수
   } = useForm<SignupForm>({
     mode: 'onChange', // 값 변경 시마다 유효성 검사
   })
@@ -28,20 +32,57 @@ export default function SignUpPage() {
   const [showPassword2, { toggle: togglePassword2 }] = useToggleState(false)
 
   // 폼 제출 시, 실행되는 비동기 함수
-  const onSubmit = async (_formData: SignupForm) => {
+  const onSubmit = async (formData: SignupForm) => {
     // 폼 제출중에는 실행되지 않도록 설정
     if (isSubmitting) return
 
     // [실습] Supabase 회원가입 API 호출
-    // - 메타데이터 추가 (사용자 이름 및 소개)
+    const { error, data } = await supabase.auth.signUp({
+      // 필수 신용 정보 (이메일, 패스워드)
+      email: formData.email,
+      password: formData.password,
+      // 선택적으로 메타데이터 추가
+      // - 메타데이터 추가 (사용자 이름 및 소개)
+      options: {
+        data: {
+          username: formData.name,
+          bio: formData.bio,
+        },
+      },
+    })
 
     // [실습] 회원가입 API 호출 에러 처리
-    // - toast로 오류 상태 알림
+    if (error) {
+      // - toast로 오류 상태 알림
+      toast.error(
+        `회원가입 인증 오류 발생! [${error.status}:${error.name}:${error.message}]`
+      )
+    } else {
+      // [실습] 회원가입 API 호출 성공 처리
+      if (data.user) {
+        // - profiles 테이블에 사용자 정보 저장 (오류 발생 시, toast 알림)
+        const { error } = await supabase.from('profiles').insert({
+          id: data.user.id,
+          username: data.user.user_metadata.username,
+          email: data.user.user_metadata.email,
+          bio: data.user.user_metadata.bio,
+          created_at: new Date().toISOString(),
+        })
 
-    // [실습] 회원가입 API 호출 성공 처리
-    // - profiles 테이블에 사용자 정보 저장 (오류 발생 시, toast 알림)
-    // - toast로 회원가입 성공 메시지 알림 및 로그인 페이지 이동 액션 추가
-    // - 폼 초기화
+        if (error) {
+          toast.error(
+            '프로필 테이블 추가 오류 발생! [${error.status}:${error.name}:${error.message}]'
+          )
+        } else {
+          // - toast로 회원가입 성공 메시지 알림
+          toast.success('회원가입에 성공했습니다!')
+          // 로그인 페이지로 이동 (페이지 변경)
+          navigate('signin')
+          // - 폼 초기화
+          reset()
+        }
+      }
+    }
   }
 
   // password2 유효성 검증을 위해 password 값을 참조
