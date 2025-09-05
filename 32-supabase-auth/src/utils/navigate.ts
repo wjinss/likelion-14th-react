@@ -2,7 +2,7 @@ import type { Page } from '@/pages/common/navigation'
 
 export default function navigate<T = Page>(page: T) {
   // 브라우저 주소창의 쿼리스트링을 변경
-  const url = new URL(window.location.href)
+  const url = new URL(globalThis.location.href)
   url.searchParams.set('page', String(page))
   globalThis.history.pushState({}, '', url.toString())
 

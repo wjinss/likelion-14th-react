@@ -1,4 +1,4 @@
-import type { Profile } from '@/libs/supabase'
+import type { ProfilePartial } from '@/libs/supabase'
 import { tw } from '@/utils'
 import NavLink, { type NavigationItem } from './nav-link'
 
@@ -11,7 +11,7 @@ const PAGES: NavigationItem[] = [
 ]
 
 interface Props {
-  user: Partial<Profile> | null
+  user: ProfilePartial | null
 }
 
 export default function Navigation({ user }: Props) {

@@ -1,4 +1,3 @@
-import { AuthResponse } from '@supabase/supabase-js'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
