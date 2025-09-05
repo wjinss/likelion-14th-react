@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Toaster } from 'sonner'
 import { ErrorBoundary } from '@/components'
 import '@/styles/main.css'
 import App from './app'
@@ -11,6 +12,7 @@ createRoot(root).render(
   <StrictMode>
     <ErrorBoundary>
       <App />
+      <Toaster position="top-center" />
     </ErrorBoundary>
   </StrictMode>
 )
