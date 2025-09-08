@@ -1,33 +1,54 @@
-export default function App() {
-  return (
-    <div className="p-10">
-      <div role="group" className="flex gap-1">
-        <button type="button" className="button">
-          로그인
-        </button>
-        <button type="button" className="button">
-          회원가입
-        </button>
-      </div>
+import { type FormEvent, useRef, version } from 'react'
+import { Send } from 'lucide-react'
+import { LearnSection } from '@/components'
+import EmailInput from './components/form/email-input'
+import EmailInputHOC from './components/form/email-input-hoc'
+import EmailInputRefForward from './components/form/email-input-remind'
 
-      <div className="max-w-none [&_p]:leading-normal">
-        <p>
-          다이얼로그는 사용자와 상호작용하는 모달 창으로, 정보를 표시하거나
-          사용자 입력을 받는 데 사용됩니다.
-        </p>
-        <p>
-          모달 다이얼로그는 사용자가 다른 작업을 계속하기 전에 반드시
-          상호작용해야 하는 중요한 정보나 작업을 표시할 때 유용합니다.
-        </p>
-        <a
-          href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="cursor-pointer button no-underline"
-        >
-          참고
-        </a>
-      </div>
-    </div>
+export default function App() {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    // 브라우저 기본 작동 방지
+    e.preventDefault()
+
+    // <form> 요소
+    const form = e.currentTarget
+
+    // 입력된 이메일 값 출력
+    console.log(inputRef.current?.value)
+
+    // 폼 초기화
+    form.reset()
+  }
+
+  return (
+    <LearnSection
+      title="참조 객체 전달하기 (Forwarding Ref Object)"
+      className="p-10"
+    >
+      <h2 className="text-3xl font-extrabold">
+        리액트 {version} 버전으로 렌더링
+      </h2>
+
+      <form noValidate onSubmit={handleSubmit} className="flex gap-1">
+        {/* 하위 커스텀 컴포넌트에 ref 전달하기 (React 18 실패 ❌) */}
+        {/* 리액트가 말하길, React.forwoarRef 고차 컴포넌트를 사용해야된다 */}
+        {/* 하위 커스텀 컴포넌트에 ref 전달하기 (React 19 성공 ✅) */}
+        {/* 리액트 19버전부터 ref는 속성(props)으로 처리됨 */}
+        <EmailInput ref={inputRef} />
+        {/* <EmailInputHOC ref={inputRef} /> */}
+        {/* <EmailInputRefForward ref={inputRef} /> */}
+        <button type="submit" className="button flex gap-1 items-center">
+          <Send
+            size={16}
+            ref={(elem) => {
+              console.log(elem)
+            }}
+          />{' '}
+          제출
+        </button>
+      </form>
+    </LearnSection>
   )
 }
