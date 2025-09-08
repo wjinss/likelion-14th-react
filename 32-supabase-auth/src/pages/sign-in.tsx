@@ -150,3 +150,147 @@ export default function SignInPage() {
     </div>
   )
 }
+
+// ; () => {
+//   // 로그인 폼 입력값 타입 정의
+//   type LoginFormTest = {
+//     email: string // 사용자 이메일
+//     password: string // 사용자 패스워드
+//   }
+
+//   function SignInPageTest() {
+//     // 폼 상태, 에러, 제출 상태 등 관리
+//     const {
+//       register, // 인풋에 상태 등록 / 인풋 요소를 react-hook-form에 등록(값/검증 연결)하는 함수
+//       handleSubmit, // 제출 이벤트 핸들러
+//       formState: { errors, isSubmitting }, // 폼 에러 객체 및 제출 중 상태
+//       reset, // 폼 초기화 함수
+//     } = useForm<LoginFormTest>({
+//       mode:'onChange' // 값이 변경될때마다 유효성 검사
+//     })
+
+//     // 패스워드 표시/감춤 상태
+//     const [showPasswordTest, { toggle}] = useToggleState(false)
+
+//     // 폼 제출 시, 실행되는 비동기 함수
+//     const onSubmitTest = async (formData: LoginFormTest) => {
+//       // 폼 제출 중에는 실행되지 않도록 설정
+//       if (isSubmitting) return
+
+//       // supabase 로그인 api 호출 / (formData : {email, password} 전달 )
+//       const { error, data } = await supabase.auth.signInWithPassword(formData)
+
+//       // 로그인 api 호출 에러 처리
+//       if (error) {
+//         // - toast로 오류 상태 알림
+//         toast.error(`로그인 오류 발생! [${error.status} : ${error.name} : ${error.message}]`)
+//       } else {
+//         // 로그인 api 호출 성공 처리
+//         if (data.user) { // 반환된 데이터에 유저 객체가 있으면
+//           const { username } = data.user.user_metadata // user의 메타데이터에서 username 추출
+//           // - toast로 로그인 성공 메시지 알림 및 프로필 페이지 이동 액션 추가
+//           toast.success(`${username}님! 로그인이 성공됐습니다!`, {
+//             action: {
+//               label: '프로필 페이지로 이동', // 액션 버튼 라벨
+//               onClick: () => {
+//                 navigate('profile') // 프로필 페이지로 이동
+//                 reset() // 폼 초기화
+//               }
+//             }
+//           })
+//         }
+//       }
+//     }
+//     return     <div className="max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-8">
+//       <h2 className="text-xl font-bold mb-6 text-center">로그인</h2>
+//       <form
+//         onSubmit={handleSubmit(onSubmitTest)}
+//         aria-label="로그인 폼"
+//         autoComplete="off"
+//         noValidate
+//       >
+//         <div className="mb-4">
+//           <label htmlFor="login-email" className="block font-medium mb-1">
+//             이메일
+//           </label>
+//           <input
+//             type="text"
+//             id="login-email"
+//             autoComplete="off"
+//             aria-invalid={!!errors.email}
+//             aria-describedby={errors.email ? 'login-email-error' : undefined}
+//             // 필수 입력 유효성 검사
+//             {...register('email', {
+//               required: '이름 또는 이메일을 입력하세요',
+//             })}
+//             className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${
+//               errors.email
+//                 ? 'border-red-500 ring-red-300'
+//                 : 'border-gray-300 focus:ring-blue-300'
+//             }`}
+//           />
+//           {errors.email && (
+//             <div
+//               id="login-email-error"
+//               className="text-red-500 text-sm mt-1"
+//               role="alert"
+//             >
+//               {errors.email.message}
+//             </div>
+//           )}
+//         </div>
+
+//         <div className="mb-4">
+//           <label htmlFor="login-password" className="block font-medium mb-1">
+//             패스워드
+//           </label>
+//           <div className="relative">
+//             <input
+//               id="login-password"
+//               type={showPasswordTest ? 'text' : 'password'} // 타입 토글
+//               autoComplete="off"
+//               aria-invalid={!!errors.password}
+//               aria-describedby={
+//                 errors.password ? 'login-password-error' : undefined
+//               }
+//               {...register('password', {
+//                 required: '패스워드를 입력하세요',
+//               })}
+//               className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${
+//                 errors.password
+//                   ? 'border-red-500 ring-red-300'
+//                   : 'border-gray-300 focus:ring-blue-300'
+//               }`}
+//             />
+//             <button
+//               type="button"
+//               onClick={toggle}
+//               className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition focus:outline-none focus:ring focus:ring-blue-300"
+//               aria-label={showPasswordTest ? '패스워드 숨기기' : '패스워드 표시'}
+//               title={showPasswordTest ? '패스워드 숨기기' : '패스워드 표시'}
+//             >
+//               {showPasswordTest ? <Eye size={16} /> : <EyeOff size={16} />}
+//             </button>
+//           </div>
+//           {errors.password && (
+//             <div
+//               id="login-password-error"
+//               className="text-red-500 text-sm mt-1"
+//               role="alert"
+//             >
+//               {errors.password.message}
+//             </div>
+//           )}
+//         </div>
+//         <button
+//           type="submit"
+//           aria-disabled={isSubmitting} // 제출 중일 때 비활성화
+//           className="cursor-pointer w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+//         >
+//           {isSubmitting ? '로그인 중...' : '로그인'}
+//         </button>
+//       </form>
+//     </div>
+//   }
+//   export SignInPageTest
+// }
