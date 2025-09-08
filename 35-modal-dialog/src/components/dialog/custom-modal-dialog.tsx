@@ -4,6 +4,7 @@
 import {
   type MouseEvent,
   type PropsWithChildren,
+  useCallback,
   useEffect,
   useId,
   useRef,
@@ -28,18 +29,23 @@ export default function CustomModalDialog({
 }: Props) {
   const dialogDimRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
-  const opnnerRef = useRef<HTMLElement>(null)
+  const opennerRef = useRef<HTMLElement>(null)
 
   const dialogId = useId()
   const titleId = `${dialogId}-title`
   const describeId = `${dialogId}-describe`
+
+  const close = useCallback(() => {
+    opennerRef.current?.focus()
+    onClose?.()
+  }, [onClose])
 
   useEffect(() => {
     const dialog = dialogRef.current
     if (!open || !dialog) return
 
     // 모달 다이얼로그를 연 어떤 요소를 RefObject를 사용해 기억(memo)
-    opnnerRef.current = document.activeElement as HTMLElement
+    opennerRef.current = document.activeElement as HTMLElement
 
     // 모달이 열리면 모달 안에서 탭키로 탐색 가능한(tabbale) 요소들을 수집
     const tabbables = [...dialog.querySelectorAll(tabbableSelector)]
@@ -76,24 +82,23 @@ export default function CustomModalDialog({
       const firtsTabbable = tabbables.at(0) as HTMLElement
       const lastTabbable = tabbables.at(-1) as HTMLElement
 
-      if (key === 'Escape') {
-        onClose?.()
-        opnnerRef.current?.focus()
-        return
-      }
+      // if (key === 'Escape') {
+      //   onClose?.()
+      //   opnnerRef.current?.focus()
+      //   return
+      // }
+      if (key === 'Escape') return close()
 
       if (key === 'Tab') {
         if (shiftKey && activeElement === firtsTabbable) {
           // - 탭 가능한 요소들 중 첫 번째 요소에서 shift + 탭 키를 누르면
           // 마지막 요소로 초점 이동(브라우저의 기본 작동 방지)
-          console.log('첫번째 이동 가능한 요소에서 슆 + 탭 키 누름')
           e.preventDefault()
           lastTabbable.focus()
         } else if (!shiftKey && activeElement === lastTabbable) {
           // - 탭 가능한 요소들 중 마지막 요소에서 탭 키를 누르면
           // 첫 번째 요소로 초점 이동(브라우저의 기본 작동 방지)
           e.preventDefault()
-          console.log('마지막 이동 가능한 요소에서 탭 키 누름')
           firtsTabbable.focus()
         }
       }
@@ -101,25 +106,35 @@ export default function CustomModalDialog({
 
     dialog.addEventListener('keydown', handleFocusTrap)
 
+    // 다이얼로그 열린 상태
+    // 문서의 스크롤 바를 감춤
+    document.body.style.overflowY = 'hidden'
+
     return () => {
       dialog.removeEventListener('keydown', handleFocusTrap)
+      // 다이얼로그 닫힌 상태
+      // 문서의 스크롤 바를 표시
+      setTimeout(() => {
+        document.body.style.overflowY = 'visible'
+        // 모달이 닫히고 스크롤바가 생기는 시간을 조절 가능
+      }, 0)
     }
-  }, [open, onClose])
+  }, [open, onClose, close])
 
   const portalContainer = document.getElementById('modal-dialog-portal')
   if (!portalContainer) return null
 
-  const handleClose = (e: MouseEvent<HTMLDivElement>) => {
-    if (dialogDimRef.current === e.target) {
-      onClose?.()
-    }
-  }
+  // const handleClose = (e: MouseEvent<HTMLDivElement>) => {
+  //   if (dialogDimRef.current === e.target) {
+  //     onClose?.()
+  //   }
+  // }
 
   return createPortal(
     <div
       ref={dialogDimRef}
       role="presentation"
-      onClick={handleClose}
+      onClick={(e) => dialogDimRef.current === e.target && close()}
       className={tw(
         'fixed inset-0 z-10000',
         open ? 'flex' : 'hidden',
@@ -145,7 +160,7 @@ export default function CustomModalDialog({
           type="button"
           aria-label="다이얼로그 닫기"
           title="다이얼로그 닫기"
-          onClick={onClose}
+          onClick={close}
           className={tw(
             'cursor-pointer',
             'absolute -top-2.5 -right-2.5 bg-black text-white rounded-full'
