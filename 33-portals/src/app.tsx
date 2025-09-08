@@ -44,3 +44,47 @@ function Article({ children }: { children: ReactNode }) {
     </article>
   )
 }
+
+// ------------------------------------------------------------------
+// 연습
+
+// ;() => {
+//   function AppTest() {
+//     return (
+//       <LearnSection>
+//         <ArticleTest>
+//           <p
+//             role="alert"
+//             className="fixed top-0 left-0 right-0 bg-indigo-900 text-white p-4 flex gap-2"
+//           >
+//             <WarehouseIcon /> 컴포넌트 A
+//           </p>
+//         </ArticleTest>
+//         <ArticleTest>
+//           <AlertPortal message="포탈을 사용해 차원 이동 렌더링 수행">
+//             <p
+//               role="alert"
+//               className="fixed top-0 left-0 right-0 bg-indigo-900 text-white p-4 flex gap-2"
+//             >
+//               <WarehouseIcon /> 컴포넌트 B
+//             </p>
+//           </AlertPortal>
+//         </ArticleTest>
+//       </LearnSection>
+//     )
+//   }
+
+//   function ArticleTest({ children }: { children: ReactNode }) {
+//     const [isToggle, { toggle }] = useToggleState(false)
+
+//     return (
+//       <article>
+//         <h2>일반적인 컴포넌트 렌더링</h2>
+//         <button type="button" onClick={toggle}>
+//           {isToggle ? '감춤' : '표시'}
+//         </button>
+//         {isToggle && children}
+//       </article>
+//     )
+//   }
+// }

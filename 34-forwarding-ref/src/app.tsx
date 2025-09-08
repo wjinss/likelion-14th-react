@@ -52,3 +52,37 @@ export default function App() {
     </LearnSection>
   )
 }
+// --------------------------------------------------------
+// tes
+// ;() => {
+//   function App() {
+//     const inputRef = useRef<HTMLInputElement>(null)
+//   }
+
+//   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+//     e.preventDefault()
+
+//     const form = e.currentTarget
+
+//     console.log(inputRef.current?.value)
+
+//     form.reset()
+//   }
+
+//   return (
+//     <LearnSection
+//       title="참조 객체 전달하기 (forwarding ref object)"
+//       className="p-10"
+//     >
+//       <h2 className="대충 스타일링">리액트 {version} 버전으로 렌더링</h2>
+//       <form noValidate onSubmit={handleSubmit} className="대충 스타일링">
+//         {/* 리액트 18버전에선 하위 커스텀 컴포넌트엔 ref로 전달할 수 없고 forwardRef로 전달해야 된다 */}
+//         {/* 리액트 19버전에선 ref로 하위 커스텀 컴포넌트에 ref로 속성을 전달할 수 있다 */}
+//         <EmailInput ref={inputRef} />
+//         <EmailInputHOC ref={inputRef} />
+//         <EmailInputRefForward ref={inputRef} />
+//         <button type="submit">제출</button>
+//       </form>
+//     </LearnSection>
+//   )
+// }

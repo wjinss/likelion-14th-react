@@ -19,3 +19,25 @@ export default function AlertPortal({
     alertPortal
   )
 }
+
+// ------------------------------------------------------------------
+// 연습
+
+// ;() => {
+//   function AlertPortal({
+//     message,
+//     children,
+//   }: PropsWithChildren<{ message?: string }>) {
+//     if (typeof document === 'undefined') return null
+
+//     const alertPortal = document.getElementById('alert-portal')
+//     if (!alertPortal) return null
+
+//     return createPortal(
+//       <div>
+//         {children} ({message})
+//       </div>,
+//       alertPortal
+//     )
+//   }
+// }

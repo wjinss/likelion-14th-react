@@ -18,3 +18,24 @@ export default function EmailInput({ ref, label }: Props) {
     </div>
   )
 }
+
+// -------------------------------------------
+{
+  interface Props {
+    ref: RefObject<HTMLInputElement | null>
+    label?: string
+  }
+
+  function EmailInputTest({ ref, label }: Props) {
+    const inputId = useId()
+
+    return (
+      <div role="group" className="대충 스타일링">
+        <label htmlFor={inputId} className="sr-only">
+          {label ?? '이메일'}
+          <input type="email" ref={ref} id={inputId} />
+        </label>
+      </div>
+    )
+  }
+}

@@ -35,3 +35,28 @@ const EmailInputRefForward = forwardRef<HTMLInputElement, Props>(
 // EmailInputRefForward.displayName = 'EmailInput'
 
 export default EmailInputRefForward
+// -------------------------------------------
+
+{
+  interface Props {
+    label?: string
+  }
+  const EmailInputRefForward = forwardRef<HTMLInputElement, Props>(
+    function EmailInput({ label }, ref) {
+      const inputId = useId()
+
+      return (
+        <div role="group">
+          <label htmlFor={inputId}>{label ?? '이메일'}</label>
+          <input type="email" name="" id={inputId} ref={ref} />
+        </div>
+      )
+    }
+  )
+}
+// 커스텀 컴포넌트는 ref를 속성으로 취급하지 않는다.
+// 그래서 속성(props)로 전달받지 못한다.
+// ref속성을 받고 싶으면 하위 컴포넌트에 React.forwardRef를 사용해 감싼다
+
+// 이때 기명함수가 아닌 화살표 함수로 컴포넌트에 forwardRef로 감싸면 익명함수기 때문에 displayName으로 이름을 부여해야 한다
+// EmailInputRefForward.displayName = 'EmailInput'

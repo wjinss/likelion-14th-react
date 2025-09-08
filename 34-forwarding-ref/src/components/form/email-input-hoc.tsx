@@ -30,3 +30,27 @@ const EmailInputHOC = forwardRef<HTMLInputElement, Props>(
 )
 
 export default EmailInputHOC
+
+// -----------------------------------------------------------------------
+{
+  type Props = PropsWithChildren<{
+    label?: string
+  }>
+
+  const EmailInputHOC = forwardRef<HTMLInputElement, Props>(
+    function EmailInput(props, ref) {
+      const inputId = useId()
+
+      return (
+        <div role="group" className="대충 스타일링">
+          <label htmlFor={inputId}>{props.label ?? '이메일'}</label>
+          <input type="email" ref={ref} id={inputId} />
+        </div>
+      )
+    }
+  )
+}
+
+// 커스텀 컴포넌트에 forwardRef 고차 컴포넌트와 함께
+// 고차 컴포넌트 forwardRef(함수 컴포넌트) > 향상된 컴포넌트를 반환
+// 컴포넌트 두 번째 인수로 ref 객체를 전달받음
