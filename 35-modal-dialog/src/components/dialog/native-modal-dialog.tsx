@@ -8,6 +8,7 @@ import {
 import { createPortal } from 'react-dom'
 import { XCircleIcon } from 'lucide-react'
 import { tabbableSelector, tw } from '@/utils'
+import './native-modal-dialog.css'
 
 type Props = PropsWithChildren<{
   open?: boolean
@@ -45,15 +46,16 @@ export default function NativeModalDialog({
       dialog.close()
     }
 
-    // 모달의 오버레이된, 딤드 영역(백드롭, backdrop) 누를 때 닫기 기능 구현
-
+    // 모달 다이얼로그의 오버레이된,
+    // 딤 영역(백드롭(backdrop)) 누를 때 닫기 기능 구현
     const handleCloseByBackdrop = (e: globalThis.MouseEvent) => {
       if (e.target === dialog) onClose?.()
     }
-    dialog?.addEventListener('click', handleCloseByBackdrop)
+
+    dialog.addEventListener('click', handleCloseByBackdrop)
 
     return () => {
-      dialog?.removeEventListener('click', handleCloseByBackdrop)
+      dialog.removeEventListener('click', handleCloseByBackdrop)
     }
   }, [open, onClose])
 
@@ -122,9 +124,14 @@ export default function NativeModalDialog({
       dialog.removeEventListener('keydown', handleFocusTrap)
       // 다이얼로그가 닫힌 상태
       // 문서의 스크롤 바를 표시
+
+      const duration = parseFloat(
+        globalThis.getComputedStyle(dialog).getPropertyValue('--duration')
+      )
+
       setTimeout(() => {
         document.body.style.overflowY = 'visible'
-      }, 0)
+      }, duration)
     }
   }, [open, onClose, close])
 
@@ -134,7 +141,6 @@ export default function NativeModalDialog({
   return createPortal(
     <dialog
       ref={dialogRef}
-      // open={open}
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={describe ? describeId : undefined}
@@ -142,7 +148,7 @@ export default function NativeModalDialog({
         'relative',
         'overflow-visible',
         'border-0 m-auto rounded-md shadow-xl bg-white',
-        'backdrop:backdrop-blur-[2px]'
+        'backdrop:backdrop-blur-[3px]'
       )}
     >
       <div className="p-5">
