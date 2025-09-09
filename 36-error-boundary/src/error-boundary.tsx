@@ -1,13 +1,9 @@
-import { Component, ErrorInfo, type ReactNode } from 'react'
-
-interface FallbackRenderArgs {
-  error: Error
-  errorInfo: ErrorInfo
-}
+import { Component, type ErrorInfo, type ReactNode } from 'react'
+import ErrorFallbackUI, { type FallbackRenderProps } from './error-fallback-ui'
 
 interface Props {
   FallbackComponent?: ReactNode
-  fallbackRender?: ({ error, errorInfo }: FallbackRenderArgs) => ReactNode
+  fallbackRender?: ({ error, errorInfo }: FallbackRenderProps) => ReactNode
   children: ReactNode
 }
 
@@ -45,11 +41,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (hasError) {
       return (
         FallbackComponent ?? (
-          <div role="alert" className="bg-red-800 text-white p-10">
-            <h2>오류 발생! {error?.message}</h2>
-            <p>컴포넌트 스택: {errorInfo?.componentStack}</p>
-            <p>컴포넌트 다이제스트: {errorInfo?.digest}</p>
-          </div>
+          <ErrorFallbackUI error={error} errorInfo={errorInfo} />
         )
       )
     }
