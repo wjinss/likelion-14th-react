@@ -11,6 +11,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { XCircleIcon } from 'lucide-react'
+import { useOpenAnimating } from '@/hooks'
 import { tabbableSelector, tw } from '@/utils'
 
 type Props = PropsWithChildren<{
@@ -39,6 +40,9 @@ export default function CustomModalDialog({
     opennerRef.current?.focus()
     onClose?.()
   }, [onClose])
+
+  const animationDuration = 250
+  const { openFinished } = useOpenAnimating(open, animationDuration)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -137,9 +141,10 @@ export default function CustomModalDialog({
       onClick={(e) => dialogDimRef.current === e.target && close()}
       className={tw(
         'fixed inset-0 z-10000',
-        open ? 'flex' : 'hidden',
-        'justify-center items-center',
-        'bg-black/20 backdrop-blur-[3px]'
+        'flex justify-center items-center',
+        'bg-black/20 backdrop-blur-[3px]',
+        'transition-all duration-500',
+        openFinished ? 'opacity-100' : 'opacity-0 pointer-events-none'
       )}
     >
       <div
@@ -149,8 +154,13 @@ export default function CustomModalDialog({
         aria-labelledby={titleId}
         aria-describedby={describe ? describeId : undefined}
         className={tw(
-          'relative w-full max-w-lg rounded-lg shadow-xl p-10',
-          'bg-white'
+          'relative',
+          'w-full max-w-lg rounded-lg shadow-xl p-10',
+          'bg-white',
+          'transition-all duration-500',
+          openFinished
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-10'
         )}
       >
         <h2 id={titleId}>{title && '다이얼로그 제목'}</h2>
