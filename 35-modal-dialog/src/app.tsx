@@ -19,7 +19,7 @@ export default function App() {
       </div>
 
       <div className="transform-3d">
-        <CustomModalDialog open={showDialog} onClose={closeDialog}>
+        <NativeModalDialog open={showDialog} onClose={closeDialog}>
           <div className="max-w-prose [&_p]:leading-normal space-y-3">
             <p>
               다이얼로그는 사용자와 상호작용하는 모달 창으로, 정보를 표시하거나
@@ -38,7 +38,7 @@ export default function App() {
               참고
             </a>
           </div>
-        </CustomModalDialog>
+        </NativeModalDialog>
       </div>
 
       <div className="max-w-prose [&_p]:leading-normal space-y-3">

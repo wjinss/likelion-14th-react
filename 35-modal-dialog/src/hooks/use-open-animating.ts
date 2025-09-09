@@ -15,6 +15,10 @@ export default function useOpenAnimating(
   // 부수 효과 (컴포넌트의 표시, 애니메이션 상태 제어)
   useEffect(() => {
     // 모달 다이얼로그가 열릴 때
+    // 열림 상태 (중간 단계 : 애니메이션 중..)
+    // - 다이얼로그 표시 (보임 상태 true)
+    // - 애니메이션 시작 (애니메이션 상태 true)
+    // - 애니메이션이 종료되면 애니메이션 상태 false
     if (open) {
       // visible, isAnimating 상태 true 로 설정
       setVisible(true)
@@ -24,7 +28,11 @@ export default function useOpenAnimating(
         setIsAnimating(false)
       }, duration)
     }
-    // 모달 다이얼로그가 닫힐 때
+    // 모달 다이얼로그가 닫힐 때 (단, 다이얼로그가 화면에 표시되었다면)
+    // 닫힘 상태(중간 단계 : 애니메이션 중..)
+    // - 애니메이션 시작 (애니메이션 상태 true)
+    // - 애니메이션이 종료되면 애니메이션 상태 false
+    // - 다이얼로그 감품 (보임 상태 false)
     else if (visible) {
       // 닫히기 전에 애니메이션 시작
       setIsAnimating(true)

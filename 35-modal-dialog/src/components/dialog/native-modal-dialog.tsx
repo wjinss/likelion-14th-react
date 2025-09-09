@@ -37,13 +37,25 @@ export default function NativeModalDialog({
 
   useEffect(() => {
     const dialog = dialogRef.current
+    if (!dialog) return
 
     if (open) {
-      dialog?.showModal()
+      dialog.showModal()
     } else {
-      dialog?.close()
+      dialog.close()
     }
-  }, [open])
+
+    // 모달의 오버레이된, 딤드 영역(백드롭, backdrop) 누를 때 닫기 기능 구현
+
+    const handleCloseByBackdrop = (e: globalThis.MouseEvent) => {
+      if (e.target === dialog) onClose?.()
+    }
+    dialog?.addEventListener('click', handleCloseByBackdrop)
+
+    return () => {
+      dialog?.removeEventListener('click', handleCloseByBackdrop)
+    }
+  }, [open, onClose])
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -129,25 +141,28 @@ export default function NativeModalDialog({
       className={tw(
         'relative',
         'overflow-visible',
-        'border-0 m-auto p-5 rounded-md shadow-xl bg-white'
+        'border-0 m-auto rounded-md shadow-xl bg-white',
+        'backdrop:backdrop-blur-[2px]'
       )}
     >
-      <h2 id={titleId}>{title && '다이얼로그 제목'}</h2>
-      {describe && <p id={describeId}>{describe}</p>}
-      {children}
-      <button
-        type="button"
-        aria-label="다이얼로그 닫기"
-        title="다이얼로그 닫기"
-        onClick={close}
-        className={tw(
-          'cursor-pointer',
-          'absolute -top-2.5 -right-2.5 rounded-full',
-          'bg-black text-white'
-        )}
-      >
-        <XCircleIcon size={28} />
-      </button>
+      <div className="p-5">
+        <h2 id={titleId}>{title && '다이얼로그 제목'}</h2>
+        {describe && <p id={describeId}>{describe}</p>}
+        {children}
+        <button
+          type="button"
+          aria-label="다이얼로그 닫기"
+          title="다이얼로그 닫기"
+          onClick={close}
+          className={tw(
+            'cursor-pointer',
+            'absolute -top-2.5 -right-2.5 rounded-full',
+            'bg-black text-white'
+          )}
+        >
+          <XCircleIcon size={28} />
+        </button>
+      </div>
     </dialog>,
     portalContainer
   )
