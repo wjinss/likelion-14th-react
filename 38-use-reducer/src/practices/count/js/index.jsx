@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import { Minus, Plus } from 'lucide-react'
-import { init, minusAction, plusAction, reducer } from './count'
+import { init, minusAction, plusAction, reducer } from './reducer'
 
 export default function Counter({ count = 0, step = 1, min = 0, max = 9 }) {
   const [counterStore, dispatch] = useReducer(reducer, count, init)

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { tw } from '@/utils'
 
 export default function useCounter({
@@ -11,22 +11,22 @@ export default function useCounter({
   const [count, setCount] = useState<number>(initialCount)
 
   // 상태 업데이트 감소 기능(함수)
-  const handleDecrement = () => {
-    setCount((c) => {
-      const nextCount = c - step
+  const handleDecrement = useCallback(() => {
+    setCount((count) => {
+      const nextCount = count - step
       if (nextCount < min) return min
       return nextCount
     })
-  }
+  }, [min, step])
 
   // 상태 업데이트 증가 기능(함수)
-  const handleIncrement = () => {
-    setCount((c) => {
-      const nextCount = c + step
+  const handleIncrement = useCallback(() => {
+    setCount((count) => {
+      const nextCount = count + step
       if (nextCount > max) return max
       return nextCount
     })
-  }
+  }, [max, step])
 
   // 버튼 스타일링(클래스 이름)
   const buttonClasses = useMemo(

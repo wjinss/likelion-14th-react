@@ -43,7 +43,7 @@ export function reducer(state, action) {
 // - 카운트 감소
 const ACTION = {
   PLUS: '@counter/plus', // '카운트 값 증가'
-  MINUS: '@counter/minus', // '카운트 값 감소'
+  MINUS: '카운트 값 감소', // '카운트 값 감소'
 }
 
 // --------------------------------------------------------------------------

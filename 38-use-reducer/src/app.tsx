@@ -1,5 +1,5 @@
 import { LearnSection } from '@/components'
-import Counter from './practices/count/js/counter'
+import Counter from './practices/counter/js'
 
 export default function App() {
   return (
@@ -8,7 +8,7 @@ export default function App() {
       className="p-10 bg-black flex justify-center items-center h-screen"
     >
       <div className="flex flex-col gap-4">
-        <Counter count={3} min={2} max={8} step={2} />
+        <Counter count={3} min={2} max={7} step={2} />
       </div>
     </LearnSection>
   )
