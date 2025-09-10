@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { type Props } from '@/app'
 import Logo from './logo'
 import Output from './output'
 import Shortcut from './shortcut'
