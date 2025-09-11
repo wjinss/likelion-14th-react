@@ -1,15 +1,48 @@
-import { MouseEvent, useCallback, useState } from 'react'
+import {
+  type MouseEvent,
+  type PropsWithChildren,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from 'react'
 import {
   GRID,
   INITIAL_SQUARES,
   PLAYER,
-  PlayGameFunctionType,
-  PlayerType,
-  SquaresType,
+  type PlayGameFunctionType,
+  type PlayerType,
+  type SquaresType,
+  type WinnerType,
   checkWinner,
-} from '../constants'
+} from './constants'
 
-export default function useTicTacToe() {
+interface GameState {
+  gameHistory: SquaresType[]
+  gameIndex: number
+  squares: SquaresType
+  nextPlayer: PlayerType
+  winner: WinnerType | null
+  isDraw: boolean
+  playGame: PlayGameFunctionType
+  restartGame: () => void
+  makeTimeTravel: (travelIndex: number) => () => void
+  statusMessage: string
+}
+
+const TicTacToeContext = createContext<null | GameState>(null)
+
+export default function TicTacToeProvider({ children }: PropsWithChildren) {
+  const gameState: GameState = useT3State()
+
+  return (
+    <TicTacToeContext.Provider value={gameState}>
+      {children}
+    </TicTacToeContext.Provider>
+  )
+}
+
+function useT3State() {
   const [gameHistory, setGameHistory] = useState<SquaresType[]>([
     INITIAL_SQUARES,
   ])
@@ -80,4 +113,21 @@ export default function useTicTacToe() {
     makeTimeTravel,
     statusMessage,
   }
+}
+
+// 공급된 컨텍스트의 값을 컨텍스트 내부의
+// 모든 컴포넌트에서 쉽게 꺼내올 수 있도록 커스텀 훅 작성
+// eslint-disable-next-line react-refresh/only-export-components
+export const useTicTacToe = () => {
+  // 컨텍스트로부터 공급된 컨텍스트 값을 가져오려면?
+  const gameState = useContext(TicTacToeContext)
+
+  // 컨텍스트 내부에서만 커스텀 훅을 사용할 있어야 하므로 안전성 검사
+  if (!gameState) {
+    throw new Error(
+      'useTicTacToe 훅은 TicTacToeProvider 내부에서만 사용 가능합니다.'
+    )
+  }
+
+  return gameState
 }
