@@ -23,11 +23,6 @@ ThemeContext.displayName = 'ThemeContext'
 
 // --------------------------------------------------------------------------
 
-// Context 생성
-// Context.displayName 이름 지정
-// Context.Provider[value] 값 공급
-// Context.Consumer(render props) 값 수요
-
 // 컨텍스트 값(value)의 타입 정의
 interface GlobalStateValue {
   mood: string

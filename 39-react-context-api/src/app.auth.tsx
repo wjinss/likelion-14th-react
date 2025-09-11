@@ -13,11 +13,6 @@ interface AuthContextValue {
   logOut?: () => void
 }
 
-// Context 생성
-// Context.displayName 이름 지정
-// Context.Provider[value] 값 공급
-// Context.Consumer(render props) 값 수요
-
 const AuthContext = createContext<AuthContextValue>({
   user: null,
 })
