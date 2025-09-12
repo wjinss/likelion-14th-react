@@ -7,24 +7,24 @@ import type {
 } from './database.types'
 
 // 환경 변수 가져오기
-const { VITE_SUPABASE_URL, VITE_SUPABASE_API_KEY } = import.meta.env
+const { VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY } = import.meta.env
 
 // Supabase 클라이언트 인스턴스
 const supabase = createClient<Database>(
   VITE_SUPABASE_URL,
-  VITE_SUPABASE_API_KEY
+  VITE_SUPABASE_ANON_KEY
 )
 
 // 인스턴스 기본 내보내기
 export default supabase
 
-// Profile 타입 내보내기
+// profiles 테이블 타입 내보내기
 export type Profile = Tables<'profiles'>
 export type ProfilePartial = Partial<Profile>
 export type ProfileInsert = TablesInsert<'profiles'>
 export type ProfileUpdate = TablesUpdate<'profiles'>
 
-// Todos 타입 내보내기
+// todos 테이블 타입 내보내기
 export type Todo = Tables<'todos'>
 export type TodoInsert = TablesInsert<'todos'>
 export type TodoUpdate = TablesUpdate<'todos'>
