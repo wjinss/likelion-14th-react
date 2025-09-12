@@ -1,25 +1,9 @@
 // --------------------------------------------------------------------------
 // ✅ Supabase의 Todos 테이블용 클라이언트 API(함수)
 // --------------------------------------------------------------------------
-import type { User } from '@supabase/supabase-js'
 import { toast } from 'sonner'
 import supabase, { type Todo, type TodoInsert, TodoUpdate } from '../index'
-
-// --------------------------------------------------------------------------
-// 사용자 (세션) 정보 가져오기
-
-const requiredUser = async (): Promise<User> => {
-  const { error, data } = await supabase.auth.getUser()
-
-  if (error) {
-    const errorMessage = '로그인이 필요합니다!'
-    toast.error(`${errorMessage} ${error.message}`)
-    throw new Error(errorMessage)
-  }
-
-  const { user } = data
-  return user
-}
+import requiredUser from './required-user'
 
 // --------------------------------------------------------------------------
 // 생성(Create)
@@ -74,9 +58,11 @@ export const updateTodo = async (
   updateTodo: Omit<TodoUpdate, 'id' | 'created_at'> & { id: Todo['id'] }
 ): Promise<Todo> => {
   const user = await requiredUser()
+
   const { error, data: updatedTodo } = await supabase
     .from('todos')
     .update({ ...updateTodo, updated_at: new Date().toISOString() })
+    .eq('id', updateTodo.id)
     .eq('user_id', user.id)
     .select('*')
     .single()
@@ -95,6 +81,7 @@ export const updateTodo = async (
 
 export const deleteTodo = async (deleteTodoId: Todo['id']): Promise<Todo> => {
   const user = await requiredUser()
+
   const { error, data: deletedTodo } = await supabase
     .from('todos')
     .delete()
