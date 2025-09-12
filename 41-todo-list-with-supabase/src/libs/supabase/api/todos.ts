@@ -73,10 +73,11 @@ export const readTodos = async (): Promise<Todo[]> => {
 export const updateTodo = async (
   updateTodo: Omit<TodoUpdate, 'id' | 'created_at'> & { id: Todo['id'] }
 ): Promise<Todo> => {
+  const user = await requiredUser()
   const { error, data: updatedTodo } = await supabase
     .from('todos')
-    .update(updateTodo)
-    .eq('id', updateTodo.id)
+    .update({ ...updateTodo, updated_at: new Date().toISOString() })
+    .eq('user_id', user.id)
     .select('*')
     .single()
 
@@ -93,10 +94,12 @@ export const updateTodo = async (
 // 삭제(Delete)
 
 export const deleteTodo = async (deleteTodoId: Todo['id']): Promise<Todo> => {
+  const user = await requiredUser()
   const { error, data: deletedTodo } = await supabase
     .from('todos')
     .delete()
     .eq('id', deleteTodoId)
+    .eq('user_id', user.id)
     .select()
     .single()
 
