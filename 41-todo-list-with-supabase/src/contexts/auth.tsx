@@ -38,7 +38,9 @@ interface AuthContextDispatchValue {
 // Auth 컨텍스트 생성
 
 const AuthContext = createContext<AuthContextValue | null>(null)
+AuthContext.displayName = 'AuthContext'
 const AuthContextDispach = createContext<AuthContextDispatchValue | null>(null)
+AuthContextDispach.displayName = 'AuthContextDispach'
 
 // --------------------------------------------------------------------------
 // AuthProvider 컴포넌트
@@ -171,7 +173,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 }
 
 // --------------------------------------------------------------------------
-// Auth 커스텀 훅
+// Auth 컨텍스트 커스텀 훅
 
 export function useAuth(): AuthContextValue {
   const contextValue = useContext(AuthContext)
