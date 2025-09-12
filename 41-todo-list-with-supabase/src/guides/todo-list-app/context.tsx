@@ -18,8 +18,8 @@ import {
   removeTodoAction,
   removeTodoListStorageData,
   searchTodosAction,
-  setTodoAction,
   setTodoListStorageData,
+  setTodosAction,
   toggleDoneAction,
 } from './reducer'
 
@@ -46,10 +46,10 @@ export default function TodoListProvider({
 }: PropsWithChildren<{ persist?: boolean }>) {
   const [state, dispatch] = useImmerReducer(reducer, initialState, init)
 
-  // supabase 데이터베이스의 Todos 테이블 행(rows) 데이터 조회 요청
+  // [부수효과] Supabase 데이터베이스의 Todos 테이블 행(rows) 데이터 조회 요청
   useEffect(() => {
     readTodos().then((todos) => {
-      dispatch(setTodoAction(todos))
+      dispatch(setTodosAction(todos))
     })
   }, [dispatch])
 
