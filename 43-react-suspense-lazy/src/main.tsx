@@ -1,5 +1,6 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
+import { LucideLoader } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { ErrorBoundary } from '@/components'
 import { AuthProvider } from '@/contexts/auth'
@@ -13,7 +14,16 @@ createRoot(root).render(
   <StrictMode>
     <ErrorBoundary>
       <AuthProvider>
-        <App />
+        <Suspense
+          fallback={
+            <div role="status">
+              <LucideLoader className="animate-spin duration-700 size-8" />앱
+              로딩 중..
+            </div>
+          }
+        >
+          <App />
+        </Suspense>
       </AuthProvider>
       <Toaster position="bottom-right" />
     </ErrorBoundary>
