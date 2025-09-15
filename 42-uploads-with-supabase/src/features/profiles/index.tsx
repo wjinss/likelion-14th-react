@@ -127,6 +127,7 @@ export default function Profile() {
       const { error: profileUpdateError, data: updatedProfileData } =
         await supabase
           .from('profiles')
+          // RLS 보안 정책 없어요! (수정 불가능 오류)
           .update({
             username: formData.username,
             email: formData.email,

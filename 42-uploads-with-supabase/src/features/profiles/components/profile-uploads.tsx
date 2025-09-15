@@ -85,9 +85,19 @@ export default function ProfileUploads({
       // - supabase 스토리지 'profiles' 버킷에 파일 경로로 선택된 파일 업로드
       // - 오류 처리 '이미지 업로드 오류 발생! {오류.메시지}' -> 오류 발생 시, 함수 종료
       // - 오류 발생 시, isUploading, uploadProgress 상태 초기화
-      console.log(filePath)
+      const { error: uploadError } = await supabase.storage
+        .from('profiles')
+        .upload(filePath, selectedFile)
 
       clearInterval(progressInterval)
+
+      if (uploadError) {
+        const errorMessage = `이미지 업로드 오류 발생! ${uploadError.message}`
+        toast.error(errorMessage, {
+          cancel: { label: '닫기', onClick: () => console.log('닫기') },
+        })
+        throw new Error(errorMessage)
+      }
 
       // [실습]
       // 업로드된 파일의 공개 URL 가져오기
