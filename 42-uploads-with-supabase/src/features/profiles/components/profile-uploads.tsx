@@ -8,6 +8,7 @@ import {
 import { LucideTrash, LucideUpload } from 'lucide-react'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
+import supabase from '@/libs/supabase'
 import { tw } from '@/utils'
 
 interface Props {
@@ -53,7 +54,17 @@ export default function ProfileUploads({
         const filePath = `${user.id}/${fileName}`
 
         // supabase 스토리지 'profiles' 버컷에서 기존 파일 경로 삭제
-        console.log(filePath)
+        const { error } = await supabase.storage
+          .from('profiles')
+          .remove([filePath])
+
+        if (error) {
+          const errorMessage = `기존 프로필 이미지 파일 삭제 실패 오류 발생! ${error.message}`
+          toast.error(errorMessage, {
+            cancel: { label: '닫기', onClick: () => console.log('닫기') },
+          })
+          throw new Error(errorMessage)
+        }
       }
 
       // 파일 확장자 추출 및 고유 파일명 생성
