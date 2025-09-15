@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 import { useAuth } from '@/contexts/auth'
 import supabase from '@/libs/supabase'
+import { getUserDataFromProfileDB } from '@/libs/supabase/api/profiles'
 import { tw } from '@/utils'
 import BioTextarea from './components/bio-textarea'
 import EmailInput from './components/email-input'
@@ -50,20 +51,7 @@ export default function Profile() {
           // - 'username', 'email', 'bio', 'profile_image' 필드 값만 가져오기
           // - 단 하나의 행(row) 데이터만 가져오기
           // - 오류 처리 '로그인된 사용자 정보를 가져올 수 없습니다. {에러.메시지}'
-          // const data = { username: '', email: '', bio: '', profile_image: null }
-          const { error: profileError, data: profileData } = await supabase
-            .from('profiles')
-            .select('username, email, bio, profile_image')
-            .eq('id', user.id)
-            .single()
-
-          if (profileError) {
-            const errorMessage = `로그인된 사용자 정보를 가져올 수 없습니다. ${profileError.message}`
-            toast.error(errorMessage, {
-              cancel: { label: '닫기', onClick: () => console.log('닫기') },
-            })
-          }
-
+          const profileData = await getUserDataFromProfileDB()
           if (!profileData) return
 
           const { username, email, bio, profile_image } = profileData
@@ -180,7 +168,6 @@ export default function Profile() {
                 const { error } = await supabase.storage
                   .from('profiles')
                   .remove([oldFilePath])
-
                 if (error) {
                   const errorMessage = `이전 프로필 이미지 삭제 오류 발생! ${error.message}`
                   toast.error(errorMessage)
@@ -208,6 +195,7 @@ export default function Profile() {
               toast.error(errorMessage)
               throw new Error(errorMessage)
             }
+
             // [실습]
             // 업로드된 파일의 공개 URL 가져오기
             // - supabase 스토리지 'profiles' 버킷에서 파일 경로로 공개된 URL 가져오기
@@ -221,7 +209,6 @@ export default function Profile() {
             // 프로필(profiles) 테이블의 이미지 URL 업데이트
             // - 인증된 사용자 행에 profile_image 필드에 업데이트
             // - 오류 처리 '프로필 이미지 URL 저장 실패! {오류.메시지}' -> 오류 발생 시, 함수 종료
-
             const { error: updateProfileError } = await supabase
               .from('profiles')
               .update({ profile_image: publicUrl })
