@@ -2,7 +2,7 @@ import { memo, useState } from 'react'
 import { LucideListTodo, LucideUserRoundPen } from 'lucide-react'
 import { Dialog, SignInForm, SignUpForm } from '@/components'
 import { useAuth, useAuthDispatch } from '@/contexts/auth'
-import { NavLink } from '@/features/single-page-app'
+import { NavLink, navigate } from '@/features/single-page-app'
 import { useToggleState } from '@/hooks'
 import { tw } from '@/utils'
 import SupabaseLogo from './supabase-logo'
@@ -13,6 +13,11 @@ function Header() {
   // 인증 컨텍스트 사용
   const { user, isLoading } = useAuth()
   const { signOut } = useAuthDispatch()
+
+  const handleSignOut = () => {
+    signOut()
+    navigate('todos')
+  }
 
   // 다이얼로그 열기 상태
   const [isOpen, { toggle: toggleDialog }] = useToggleState(false)
@@ -59,7 +64,7 @@ function Header() {
               </NavLink>
               <button
                 type="button"
-                onClick={signOut}
+                onClick={handleSignOut}
                 disabled={isLoading}
                 className={tw(
                   'px-4 py-2 rounded',
