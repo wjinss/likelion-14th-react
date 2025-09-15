@@ -68,7 +68,7 @@ export const updateProfileTable = async (
 
 export const removePreviousProfileImage = async (
   profileImage: string | null
-) => {
+): Promise<void> => {
   const user = await requiredUser()
 
   if (profileImage) {
@@ -90,7 +90,7 @@ export const removePreviousProfileImage = async (
 export const uploadProfilePublicUrl = async (
   filePath: string,
   selectedFile: File
-) => {
+): Promise<string> => {
   const { error: uploadProfileError } = await supabase.storage
     .from('profiles')
     .upload(filePath, selectedFile)
@@ -105,4 +105,21 @@ export const uploadProfilePublicUrl = async (
   const { publicUrl } = data
 
   return publicUrl
+}
+
+export const updateProfilImage = async (
+  publicUrl: Profile['profile_image']
+): Promise<void> => {
+  const user = await requiredUser()
+
+  const { error: updateProfileError } = await supabase
+    .from('profiles')
+    .update({ profile_image: publicUrl })
+    .eq('id', user.id)
+
+  if (updateProfileError) {
+    const errorMessage = `프로필 이미지 URL 저장 실패 오류 발생! ${updateProfileError.message}`
+    toast.error(errorMessage)
+    throw new Error(errorMessage)
+  }
 }

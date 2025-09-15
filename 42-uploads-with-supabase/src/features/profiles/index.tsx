@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 import { useAuth } from '@/contexts/auth'
-import supabase from '@/libs/supabase'
 import {
   getUserDataFromProfileDB,
   removePreviousProfileImage,
+  updateProfilImage,
   updateProfileTable,
   updateUserMetadata,
   uploadProfilePublicUrl,
@@ -152,16 +152,7 @@ export default function Profile() {
             // 프로필(profiles) 테이블의 이미지 URL 업데이트
             // - 인증된 사용자 행에 profile_image 필드에 업데이트
             // - 오류 처리 '프로필 이미지 URL 저장 실패! {오류.메시지}' -> 오류 발생 시, 함수 종료
-            const { error: updateProfileError } = await supabase
-              .from('profiles')
-              .update({ profile_image: publicUrl })
-              .eq('id', user.id)
-
-            if (updateProfileError) {
-              const errorMessage = `프로필 이미지 URL 저장 실패 오류 발생! ${updateProfileError.message}`
-              toast.error(errorMessage)
-              throw new Error(errorMessage)
-            }
+            await updateProfilImage(publicUrl)
 
             // 상태 업데이트
             setProfileImage(publicUrl)
