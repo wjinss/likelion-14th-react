@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 import { useAuth } from '@/contexts/auth'
+import supabase from '@/libs/supabase'
 import { tw } from '@/utils'
 import BioTextarea from './components/bio-textarea'
 import EmailInput from './components/email-input'
@@ -46,11 +47,26 @@ export default function Profile() {
         try {
           // [실습]
           // 프로필(profiles) 테이블에서 인증된 사용자 데이터 조회
-          // - 'username', 'email', 'bio' 필드 값만 가져오기
+          // - 'username', 'email', 'bio', 'profile_image' 필드 값만 가져오기
           // - 단 하나의 행(row) 데이터만 가져오기
           // - 오류 처리 '로그인된 사용자 정보를 가져올 수 없습니다. {에러.메시지}'
-          const data = { username: '', email: '', bio: '', profile_image: null }
-          const { username, email, bio, profile_image } = data
+          // const data = { username: '', email: '', bio: '', profile_image: null }
+          const { error: profileError, data: profileData } = await supabase
+            .from('profiles')
+            .select('username, email, bio, profile_image')
+            .eq('id', user.id)
+            .single()
+
+          if (profileError) {
+            const errorMessage = `로그인된 사용자 정보를 가져올 수 없습니다. ${profileError.message}`
+            toast.error(errorMessage, {
+              cancel: { label: '닫기', onClick: () => console.log('닫기') },
+            })
+          }
+
+          if (!profileData) return
+
+          const { username, email, bio, profile_image } = profileData
 
           // 폼 필드 초기값 설정
           if (email) {
