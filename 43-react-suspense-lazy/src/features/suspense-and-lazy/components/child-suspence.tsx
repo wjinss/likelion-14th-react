@@ -13,8 +13,9 @@ export default function ChildWithSuspence({ cutoff }: { cutoff: number }) {
     queryKey: ['data', cutoff], // ['data', 4]
     // 비동기 함수
     queryFn: () => getData(cutoff),
+    // staleTime: 데이터를 가져온 후, 얼마만큼의 시간이 지나면 오래된 것으로 취급하는가?
     staleTime: 2000,
-    retry: false,
+    retry: true, // 데이터 재요청
   })
 
   return (
