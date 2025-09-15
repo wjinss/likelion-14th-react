@@ -1,5 +1,5 @@
 export type ProfileFormData = {
-  username: string
+  username: string | null
   email: string
   bio: string | null
 }
