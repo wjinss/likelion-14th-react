@@ -3,12 +3,17 @@ import { useDeferredValue, useState } from 'react'
 import { SearchForm, SlowChild } from '@/features/deferred-value'
 
 function Page() {
+  // 즉각 반응하는 상태
   const [query, setQuery] = useState<string>('')
+  // 지연된 값(즉각 반응하는 상태에 의존)
   const deferredQuery = useDeferredValue(query, '')
+
+  // 파생된 상태
+  const isPending = query !== deferredQuery
 
   return (
     <>
-      {/* 문서의 제목을 바꾸는 리액트 노드 */}
+      {/* title:문서의 제목을 바꾸는 리액트 노드 */}
       <title>지연된 값 (Deferred Value)</title>
       <section className="my-2">
         <h2 className="text-[22px] font-semibold">
@@ -29,7 +34,7 @@ function Page() {
         <SearchForm query={query} setQuery={setQuery} />
 
         <div className="flex flex-col space-y-5">
-          <SlowChild query={deferredQuery} />
+          <SlowChild query={deferredQuery} isPending={isPending} />
           {/* <FilterList query={query} /> */}
           {/* 지연된 값과 Suspense를 결합해 이전 값을 표시 */}
           {/* <SlowList query={query} /> */}
