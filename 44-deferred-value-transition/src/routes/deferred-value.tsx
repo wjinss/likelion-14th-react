@@ -1,12 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { SearchForm } from '@/features/deferred-value'
+import { useDeferredValue, useState } from 'react'
+import { SearchForm, SlowChild } from '@/features/deferred-value'
 
 function Page() {
   const [query, setQuery] = useState<string>('')
+  const deferredQuery = useDeferredValue(query, '')
 
   return (
     <>
+      {/* 문서의 제목을 바꾸는 리액트 노드 */}
       <title>지연된 값 (Deferred Value)</title>
       <section className="my-2">
         <h2 className="text-[22px] font-semibold">
@@ -27,7 +29,7 @@ function Page() {
         <SearchForm query={query} setQuery={setQuery} />
 
         <div className="flex flex-col space-y-5">
-          {/* <SlowChild query={query} /> */}
+          <SlowChild query={deferredQuery} />
           {/* <FilterList query={query} /> */}
           {/* 지연된 값과 Suspense를 결합해 이전 값을 표시 */}
           {/* <SlowList query={query} /> */}
