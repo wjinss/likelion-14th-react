@@ -11,14 +11,14 @@ export default function Tabs() {
   // 사용자 경험을 향상시켜 봅니다.
   const [isPending, startTransition] = useTransition()
 
-  // 트랜지션 시작
   function handleTabChange(nextTab: Tab) {
     // 즉각적인 상태 업데이트 리액트에 요청
     // setTab(nextTab)
 
+    // 트랜지션 시작
     startTransition(() => {
-      // 1. 사용자와의 즉각적인 상호작용 우선순위
-      // 2. 렌더링 우선 순위를 낮춰서 진행
+      // [1] 사용자와의 즉각적인 상호작용 우선순위
+      // [2] 렌더링 우선순위를 낮춰서 진행
       setTab(nextTab)
     })
   }
@@ -76,6 +76,7 @@ function TabPanel({ tab }: { tab: Tab }) {
     default:
       render = null
   }
+
   return (
     <div className={tw('tab-panel bg-white rounded-lg shadow overflow-hidden')}>
       <h2
@@ -162,7 +163,7 @@ function Comments() {
 }
 
 function Comment({ children }: { children: number }) {
-  performanceDelay(2)
+  performanceDelay(5)
 
   return (
     <li className={tw('py-2 px-4 hover:bg-gray-50')}>댓글 {children + 1}</li>
