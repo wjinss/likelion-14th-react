@@ -1,6 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useAuth } from '@/contexts/auth'
 
 function Page() {
+  const { isAuthenticated } = useAuth()
+
+  console.log(isAuthenticated)
+
   return (
     <>
       <title>use 함수</title>
