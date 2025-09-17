@@ -1,10 +1,4 @@
-import {
-  type FormEvent,
-  useId,
-  useState,
-  useTransition,
-  // useRef, useState
-} from 'react'
+import { type FormEvent, useId, useState, useTransition } from 'react'
 import { tw, wait } from '@/utils'
 
 // [이전 방식]
@@ -19,13 +13,14 @@ import { tw, wait } from '@/utils'
 // - 트랜지션을 사용해 로딩 상태와 트랜지션 시작 설정
 // - 액션을 트랜지션과 함께 사용하면
 //   비동기 작업이 진행되는 동안 부드럽게 UI 작동
+
 export default function UsingAction() {
   const id = useId()
 
   const [data, setData] = useState<string>('10')
   const [isPending, startTransition] = useTransition()
 
-  const formAction = async (formData: FormData) => {
+  const actionFunc = async (formData: FormData) => {
     const age = formData.get('age')
 
     startTransition(async () => {
@@ -36,10 +31,8 @@ export default function UsingAction() {
 
   return (
     <form
-      action={formAction}
-      className={tw(
-        'max-w-xs mx-auto mt-10 p-6 bg-white rounded-lg shadow space-y-4'
-      )}
+      // action={actionFunc}
+      className={tw('max-w-xs mt-2 p-6 bg-white rounded-lg shadow space-y-4')}
     >
       <label htmlFor={id} className="block text-slate-800 font-semibold">
         나이 변경
@@ -58,7 +51,7 @@ export default function UsingAction() {
       />
       <button
         type="submit"
-        // formAction={formAction} // 버튼에 연결 가능
+        formAction={actionFunc}
         disabled={isPending}
         className={tw(
           'w-full py-2 px-4 rounded font-bold transition',

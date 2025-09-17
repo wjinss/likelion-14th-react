@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Pagination, SlowList, Tabs } from '@/features/transition'
+import { tw } from '@/utils'
 
 // 트랜지션이 필요한 이유
 // - 입력 즉시 반응 vs. 느린 작업 분리
@@ -19,9 +20,11 @@ function Page() {
           </p>
         </div>
 
-        <Pagination />
-        <SlowList />
-        <Tabs />
+        <div className={tw`flex flex-col lg:flex-row flex-wrap gap-10`}>
+          <Pagination />
+          <SlowList />
+          <Tabs />
+        </div>
       </section>
     </>
   )

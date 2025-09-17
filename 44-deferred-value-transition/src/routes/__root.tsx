@@ -1,7 +1,10 @@
 import { Outlet, createRootRoute, useNavigate } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { MouseEvent, useCallback, useTransition } from 'react'
-import { NavLink } from '@/components'
+import { Dialog, NavLink, SignInForm } from '@/components'
+import { useAuth, useAuthDispatch } from '@/contexts/auth'
+import { useToggleState } from '@/hooks'
+import { tw } from '@/utils'
 
 const navigation: { path: string; text: string }[] = [
   { path: '/deferred-value', text: '지연된 값' },
@@ -60,20 +63,50 @@ function Nav({
   isPending?: boolean
   onNavigate: (e: MouseEvent<HTMLAnchorElement>) => void
 }) {
+  const { isAuthenticated } = useAuth()
+  const { signOut } = useAuthDispatch()
+  const [showModal, { on, off }] = useToggleState(false)
+
   return (
     <nav aria-label="내비게이션" className="container mx-auto">
-      <ul className="flex gap-x-3.5 p-4">
-        {navigation.map((navItem) => (
-          <li key={navItem.path}>
-            <NavLink
-              href={navItem.path}
-              isPending={isPending}
-              onNavigate={onNavigate}
+      <ul className="flex items-center gap-x-3.5 p-4">
+        {navigation.map((navItem) => {
+          const isLast = navigation.at(-1) === navItem
+          return (
+            <li key={navItem.path} className={tw(isLast && 'flex-1')}>
+              <NavLink
+                href={navItem.path}
+                isPending={isPending}
+                onNavigate={onNavigate}
+              >
+                {navItem.text}
+              </NavLink>
+            </li>
+          )
+        })}
+        <li>
+          {isAuthenticated ? (
+            <button
+              type="button"
+              className="button bg-amber-300! text-amber-950!"
+              onClick={signOut}
             >
-              {navItem.text}
-            </NavLink>
-          </li>
-        ))}
+              로그아웃
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="button bg-amber-300! text-amber-950!"
+              onClick={on}
+            >
+              로그인
+            </button>
+          )}
+
+          <Dialog mode="custom" open={showModal} onClose={off}>
+            <SignInForm onSwitchForm={() => {}} onClose={off} />
+          </Dialog>
+        </li>
       </ul>
     </nav>
   )

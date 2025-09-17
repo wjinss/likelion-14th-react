@@ -25,7 +25,7 @@ export default function OptimisticUI() {
   }
 
   return (
-    <div className={tw`flex items-center justify-center mt-10`}>
+    <div className={tw`flex items-center justify-center mt-2`}>
       <div className={tw`w-full max-w-md p-6 bg-white rounded-lg shadow`}>
         <form
           ref={formRef}
@@ -35,13 +35,18 @@ export default function OptimisticUI() {
           <input
             type="text"
             name="message"
-            className={tw`flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+            className={tw`
+              flex-1 px-3 py-2
+              border border-gray-300 rounded
+              focus:outline-none focus:ring-2 focus:ring-indigo-500
+            `}
             placeholder="메시지 입력"
             required
           />
           <button
             type="submit"
             className={tw`
+              cursor-pointer
               px-4 py-2 bg-indigo-600 text-white font-bold rounded 
               hover:bg-indigo-700 transition
               disabled:cursor-not-allowed disabled:opacity-50
@@ -54,7 +59,9 @@ export default function OptimisticUI() {
           {messages.map((message, index) => (
             <div
               key={`message-${index}-${message}`}
-              className={tw`px-3 py-2 rounded bg-blue-50 text-indigo-800 font-mono`}
+              className={tw`
+                px-3 py-2 rounded bg-blue-50 text-indigo-800 font-mono
+              `}
             >
               {message}
             </div>

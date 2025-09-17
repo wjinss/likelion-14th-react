@@ -24,7 +24,7 @@ export default function Tabs() {
   }
 
   return (
-    <div className={tw('w-full max-w-3xl mx-auto p-4')}>
+    <div className={tw('w-full max-w-3xl p-4')}>
       <div className={tw('flex border-b border-gray-200 mb-4')}>
         <TabButton
           tab="posts"

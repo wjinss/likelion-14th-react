@@ -13,6 +13,7 @@ import { Route as UseFunctionRouteImport } from './routes/use-function'
 import { Route as TransitionRouteImport } from './routes/transition'
 import { Route as DeferredValueRouteImport } from './routes/deferred-value'
 import { Route as ActionRouteImport } from './routes/action'
+import { Route as IndexRouteImport } from './routes/index'
 
 const UseFunctionRoute = UseFunctionRouteImport.update({
   id: '/use-function',
@@ -34,14 +35,21 @@ const ActionRoute = ActionRouteImport.update({
   path: '/action',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/action': typeof ActionRoute
   '/deferred-value': typeof DeferredValueRoute
   '/transition': typeof TransitionRoute
   '/use-function': typeof UseFunctionRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/action': typeof ActionRoute
   '/deferred-value': typeof DeferredValueRoute
   '/transition': typeof TransitionRoute
@@ -49,6 +57,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/action': typeof ActionRoute
   '/deferred-value': typeof DeferredValueRoute
   '/transition': typeof TransitionRoute
@@ -56,11 +65,17 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/action' | '/deferred-value' | '/transition' | '/use-function'
+  fullPaths:
+    | '/'
+    | '/action'
+    | '/deferred-value'
+    | '/transition'
+    | '/use-function'
   fileRoutesByTo: FileRoutesByTo
-  to: '/action' | '/deferred-value' | '/transition' | '/use-function'
+  to: '/' | '/action' | '/deferred-value' | '/transition' | '/use-function'
   id:
     | '__root__'
+    | '/'
     | '/action'
     | '/deferred-value'
     | '/transition'
@@ -68,6 +83,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   ActionRoute: typeof ActionRoute
   DeferredValueRoute: typeof DeferredValueRoute
   TransitionRoute: typeof TransitionRoute
@@ -104,10 +120,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ActionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   ActionRoute: ActionRoute,
   DeferredValueRoute: DeferredValueRoute,
   TransitionRoute: TransitionRoute,

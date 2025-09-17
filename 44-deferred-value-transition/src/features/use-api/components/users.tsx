@@ -1,9 +1,9 @@
 import {
   Suspense,
   use,
-  useEffect,
   useMemo,
-  useState,
+  // useEffect,
+  // useState,
   // useEffect,
   // useState
 } from 'react'
@@ -50,50 +50,47 @@ export default function Users() {
   // }, [])
 
   // [안전] Promise 인스턴스를 기억하고 있으므로 렌더링과 상관없이 동일한 참조를 하위 컴포넌트에 전달
-  const usersPromise = useMemo(
-    () =>
-      fetchUsers().catch((error) => {
-        // 오류 처리
-        setError(error)
-      }),
-    []
-  )
+  const usersPromise = useMemo(() => {
+    // [방법 2] Promise.catch() 오류 처리
+    // fetchUsers().catch((error) => setError(error)),
+    return fetchUsers()
+  }, [])
 
   // [위험] 컴포넌트가 리렌더링 되면 무한 반복에 빠질 수 있다.
-  const [message, setMessage] = useState<string>('')
+  // const [message, setMessage] = useState<string>('')
 
-  useEffect(() => {
-    if (!message) {
-      console.log('Users 렌더링: 메시지 업데이트')
-      setMessage((m) => m + '!')
-    }
-  }, [message])
+  // useEffect(() => {
+  //   if (!message) {
+  //     console.log('Users 렌더링: 메시지 업데이트')
+  //     setMessage((m) => m + '!')
+  //   }
+  // }, [message])
 
   // const usersPromise = fetchUsers() // ... Promise 2
 
   // 오류 처리 [2]
   // Promise 거절될 경우,
   // catch() 메서드를 사용해 컴포넌트 내부에서 오류 처리
-  const [error, setError] = useState<null | Error>(null)
+  // const [error, setError] = useState<null | Error>(null)
 
-  if (error) {
-    return (
-      <div
-        role="alert"
-        className={tw`
-          text-red-600 bg-red-50 rounded
-          p-2 border-2 border-red-700
-        `}
-      >
-        {error.message}
-      </div>
-    )
-  }
+  // if (error) {
+  //   return (
+  //     <div
+  //       role="alert"
+  //       className={tw`
+  //         text-red-600 bg-red-50 rounded
+  //         p-2 border-2 border-red-700
+  //       `}
+  //     >
+  //       {error.message}
+  //     </div>
+  //   )
+  // }
 
   return (
     <section className="mt-6 p-6 max-w-xl bg-gray-50 rounded-xl shadow-lg">
       <h3 className="text-xl font-bold mb-6 text-center text-indigo-700">
-        사용자 목록 ({message})
+        사용자 목록 {/* ({message}) */}
       </h3>
 
       {/* {loading && <Loading />} */}
@@ -174,9 +171,7 @@ async function fetchUsers(): Promise<User[]> {
   await wait(1.2)
 
   // 오류 상황 체크
-  throw new Error('데이터 가져오기에 실패했습니다.')
-
-  console.log('fetchUsers')
+  // throw new Error('데이터 가져오기에 실패했습니다.')
 
   return [
     { id: '1', name: '김민준' },

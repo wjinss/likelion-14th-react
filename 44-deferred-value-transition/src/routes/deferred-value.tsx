@@ -49,7 +49,7 @@ function Page() {
           /> */}
 
           {/* 지연된 값과 Suspense를 결합해 이전 값을 표시 */}
-          <div className="flex gap-x-8">
+          <div className="flex flex-col lg:flex-row gap-x-8">
             <div className="space-y-2">
               <SearchForm query={query1} setQuery={setQuery1} />
               <h2>지연값 사용 안함 / 메모 안됨</h2>
