@@ -20,7 +20,6 @@ export default function wait(
     setTimeout(() => {
       if (forceRejected) {
         reject(rejectMessage)
-        throw new Error(rejectMessage)
       } else {
         resolve(resolveMessage)
       }
