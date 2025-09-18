@@ -8,11 +8,12 @@ import {
 } from 'react'
 import { useImmerReducer } from 'use-immer'
 import { useAuth } from '@/contexts/auth'
-import type { Todo } from '@/libs/supabase'
+import { type Todo } from '@/libs/supabase'
 import {
   createTodo,
   deleteTodo,
   readTodos,
+  realtimeTodos,
   updateTodo,
 } from '@/libs/supabase/api/todos'
 import { wait } from '@/utils'
@@ -65,6 +66,7 @@ export default function TodoListProvider({
     init
   )
 
+  // --------------------------------------------------------------------------
   // 낙관적인 업데이트 상태
   const [optimisticTodos, updateOptimisticTodos] = useOptimistic(
     state.todos,
@@ -92,13 +94,14 @@ export default function TodoListProvider({
     }
   )
 
+  // --------------------------------------------------------------------------
   // 액션 함수
   const actions = useMemo(
     () => ({
       addTodo: async (newTodo: Todo) => {
         updateOptimisticTodos(addTodoAction(newTodo))
         try {
-          await wait(1.2, { forceResolved: true })
+          await wait(1.2, { forceResolved: false })
           const createdTodo = await createTodo({ doit: newTodo.doit })
           dispatch(addTodoAction(createdTodo))
         } catch {
@@ -135,6 +138,36 @@ export default function TodoListProvider({
     }),
     [dispatch, updateOptimisticTodos]
   )
+
+  // --------------------------------------------------------------------------
+  // 리얼타임 데이터베이스 변경 감지 이펙트
+  useEffect(() => {
+    // 구독 해제 함수 <- public.todos 테이블 변경 감지 구독
+    const unsubscribe = realtimeTodos((payload) => {
+      const { eventType, new: _newData } = payload
+
+      switch (eventType) {
+        case 'INSERT': {
+          console.log('추가')
+          break
+        }
+        case 'UPDATE': {
+          console.log('수정')
+          break
+        }
+        case 'DELETE': {
+          console.log('삭제')
+          break
+        }
+      }
+    })
+
+    // 정리(cleanup)
+    return () => {
+      // 구독 중인 데이터베이스 테이블을 구독 해제
+      unsubscribe()
+    }
+  }, [])
 
   // --------------------------------------------------------------------------
   // 인증(Auth)
