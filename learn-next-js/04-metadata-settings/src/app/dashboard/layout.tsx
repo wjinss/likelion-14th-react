@@ -3,13 +3,16 @@ import type { Metadata } from 'next'
 import { metadata as RootMetadata } from '@/app/layout'
 
 export const metadata: Metadata = {
-  title: '대시보드  | LearnMate',
+  title: {
+    template: '%s < 대시보드 | 런메이트(LearnMate)',
+    default: '대시보드 | 런메이트(LearnMate)',
+  },
   openGraph: {
     ...RootMetadata.openGraph,
     images: [
       {
         url: '/og_image_dashboard.png',
-        alt: 'LearnMate',
+        alt: 'product update 2025',
         width: 1200,
         height: 630,
       },
