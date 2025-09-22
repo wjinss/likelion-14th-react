@@ -1,7 +1,9 @@
+import { Section } from '@/components'
+
 export default function DashboardSettings() {
   return (
-    <section>
-      <h1>대시보드 설정</h1>
-    </section>
+    <Section title="대시보드 설정 페이지">
+      <p>대시보드 / 설정 페이지 방문</p>
+    </Section>
   )
 }

@@ -1,7 +1,9 @@
+import { Section } from '@/components'
+
 export default function SignUpPage() {
   return (
-    <section>
-      <h1>회원가입</h1>
-    </section>
+    <Section title="회원가입 페이지">
+      <p>회원가입 페이지 방문</p>
+    </Section>
   )
 }

@@ -1,5 +1,5 @@
-import '@/styles/main.css'
 import type { PropsWithChildren } from 'react'
+import '@/styles/main.css'
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
@@ -13,8 +13,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
         />
       </head>
-      <body>
-        <main>{children}</main>
+      <body className="overflow-y-scroll">
+        <main className="flex flex-col min-h-screen">{children}</main>
       </body>
     </html>
   )

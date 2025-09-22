@@ -1,7 +1,9 @@
+import { Section } from '@/components'
+
 export default function DashboardProfile() {
   return (
-    <section>
-      <h1>대시보드 프로필</h1>
-    </section>
+    <Section title="대시보드 프로필 페이지">
+      <p>대시보드 / 프로필 페이지 방문</p>
+    </Section>
   )
 }
