@@ -143,8 +143,8 @@ export default [
 
       // 일반적인 JavaScript 규칙
       'no-unused-vars': 'off',
-      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      // 'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
       'object-shorthand': 'error',
