@@ -1,4 +1,4 @@
-import { LucideLoaderPinwheel } from 'lucide-react'
+import { LucideLoader2 } from 'lucide-react'
 import { tw } from '../../utils'
 
 export default function Loading() {
@@ -11,7 +11,7 @@ export default function Loading() {
         text-slate-700
     `}
     >
-      <LucideLoaderPinwheel
+      <LucideLoader2
         aria-hidden={true}
         strokeWidth={0.5}
         size={64}
