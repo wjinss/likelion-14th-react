@@ -1,4 +1,9 @@
+import type { Metadata } from 'next'
 import { Section } from '@/components'
+
+export const metadata: Metadata = {
+  title: '로그인 | LearnMate',
+}
 
 export default function SignInPage() {
   return (
