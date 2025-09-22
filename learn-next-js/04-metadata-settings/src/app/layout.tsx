@@ -9,6 +9,20 @@ export const metadata: Metadata = {
   title: 'LearnMate - 1:1 퍼스널 맨투맨 학습 서비스',
   description:
     '전문 강사진과 함께하는 개인 맞춤형 학습 솔루션. 학습 목표와 수준에 맞춘 1:1 개인 교육으로 효과적인 성장을 경험하세요.',
+  openGraph: {
+    siteName: 'LearnMate',
+    type: 'website',
+    url: process.env.NEXT_PUBLIC_SITE_URL,
+    locale: 'ko-KR',
+    images: [
+      {
+        url: '/og_image.png',
+        alt: 'LearnMate',
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 }
 
 // --------------------------------------------------------------------------
