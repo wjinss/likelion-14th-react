@@ -1,0 +1,76 @@
+import type { PropsWithChildren } from 'react'
+import { NavLink } from '@/components'
+import '@/styles/main.css'
+
+// --------------------------------------------------------------------------
+// 루트 레이아웃 컴포넌트
+
+export default function RootLayout({ children }: PropsWithChildren) {
+  return (
+    <html lang="ko-KR">
+      <head>
+        <link
+          as="font"
+          rel="stylesheet"
+          fetchPriority="high"
+          crossOrigin="anonymous"
+          href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+        />
+      </head>
+      <body className="overflow-y-scroll">
+        <header className="fixed top-0 left-0 right-0 bg-slate-800 text-white">
+          <Navigation />
+        </header>
+        <main className="flex flex-col min-h-screen pt-14">{children}</main>
+      </body>
+    </html>
+  )
+}
+
+// --------------------------------------------------------------------------
+// 내비게이션 컴포넌트
+
+function Navigation() {
+  return (
+    <nav className="container mx-auto p-4">
+      <h2 className="sr-only">사이트 내비게이션</h2>
+      <ul className="flex gap-x-4 [&_a:hover]:text-amber-400">
+        <li>
+          <NavLink href="/">홈</NavLink>
+        </li>
+        <li>
+          <NavLink href="/auth/sign-up">회원가입</NavLink>
+        </li>
+        <li>
+          <NavLink href="/auth/sign-in">로그인</NavLink>
+        </li>
+        <li>
+          <NavLink href="/books">도서 목록</NavLink>
+        </li>
+        <li className="relative group">
+          <NavLink href="/dashboard" exact>
+            대시보드
+          </NavLink>
+          <ul
+            className={`
+              hidden 
+              absolute left-0 w-[8ch] 
+              p-3 pt-2 rounded-md shadow-lg 
+              space-y-1
+              bg-slate-900
+              group-hover:block
+              group-focus-within:block
+            `}
+          >
+            <li>
+              <NavLink href="/dashboard/profile">프로필</NavLink>
+            </li>
+            <li>
+              <NavLink href="/dashboard/settings">설정</NavLink>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  )
+}
