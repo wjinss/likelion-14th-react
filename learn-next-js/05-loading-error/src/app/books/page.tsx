@@ -1,7 +1,6 @@
 // import { use } from 'react'
 import type { Metadata } from 'next'
 import { Section } from '@/components'
-import { wait } from '../../utils'
 import { fetchQuotes } from './api'
 
 export const metadata: Metadata = {
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 
 // 리액트 서버 컴포넌트
 export default async function BooksPage() {
-  await wait(2.2)
   const quotes = await fetchQuotes() // 데이터 가져온 후, 서버에서 렌더링
 
   return (
