@@ -1,11 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { pretendard } from '@/fonts'
 import { tw } from '@/utils'
 import type { Book } from '../api/types'
 
 export default function Books({ items }: Props) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 mb-8">
+    <div
+      className={tw(
+        pretendard.className,
+        'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 mb-8'
+      )}
+    >
       {items.map((book) => (
         <article
           key={book.isbn}
@@ -46,7 +52,7 @@ export default function Books({ items }: Props) {
           </div>
 
           <div className="px-4 pb-4">
-            <p className="text-sm line-clamp-3 leading-normal text-slate-600 mb-3">
+            <p className="text-sm line-clamp-3 leading-loose text-slate-600 mb-3">
               {book.contents}
             </p>
 
