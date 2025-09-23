@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
 import { NavLink } from '@/components'
-// import { spoqaHandSansNeo } from '@/fonts'
+import { spoqaHandSansNeo } from '@/fonts'
 import '@/styles/main.css'
 import { tw } from '@/utils'
 
@@ -33,15 +33,16 @@ export const metadata: Metadata = {
 // --------------------------------------------------------------------------
 // 폰트
 
-const classes = tw()
-// 사용할 폰트의 variable 등록
-// spoqaHandSansNeo.variable,
-// fonts.pretendard.variable,
-// fonts.notoSansKR.variable,
-// fonts.gothicA1.variable,
-// 'antialiased',
-// 등록한 폰트 유틸리티 클래스 설정
-// 'font-spoqa'
+const classes = tw(
+  // 사용할 폰트의 variable 등록
+  spoqaHandSansNeo.variable,
+  // fonts.pretendard.variable,
+  // fonts.notoSansKR.variable,
+  // fonts.gothicA1.variable,
+  // 'antialiased',
+  // 등록한 폰트 유틸리티 클래스 설정
+  'font-spoqa'
+)
 
 // --------------------------------------------------------------------------
 // 루트 레이아웃 컴포넌트
@@ -74,6 +75,9 @@ function Navigation() {
       <ul className="flex gap-x-4 [&_a:hover]:text-amber-400">
         <li>
           <NavLink href="/">홈</NavLink>
+        </li>
+        <li>
+          <NavLink href="/jquery">Script 컴포넌트</NavLink>
         </li>
         <li>
           <NavLink href="/auth/sign-up">회원가입</NavLink>
