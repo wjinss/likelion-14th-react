@@ -1,7 +1,12 @@
 import type { PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
+import { Noto_Sans_KR } from 'next/font/google'
 import { NavLink } from '@/components'
 import '@/styles/main.css'
+import { tw } from '../utils'
+
+// --------------------------------------------------------------------------
+// 메타데이터
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
@@ -26,6 +31,14 @@ export const metadata: Metadata = {
 }
 
 // --------------------------------------------------------------------------
+// 폰트
+
+const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  variable: '--noto-sans-kr',
+})
+
+// --------------------------------------------------------------------------
 // 루트 레이아웃 컴포넌트
 
 export default function RootLayout({ children }: PropsWithChildren) {
@@ -40,7 +53,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
           href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
         />
       </head>
-      <body className="overflow-y-scroll">
+      <body
+        className={tw(`overflow-y-scroll antialiased`, notoSansKR.className)}
+      >
         <header className="fixed z-10000 top-0 left-0 right-0 bg-slate-950/80 text-white backdrop-blur-xs">
           <Navigation />
         </header>
