@@ -62,6 +62,9 @@ function Navigation() {
           <NavLink href="/">홈</NavLink>
         </li>
         <li>
+          <NavLink href="/quotes">인용 목록</NavLink>
+        </li>
+        <li>
           <NavLink href="/auth/sign-up">회원가입</NavLink>
         </li>
         <li>
