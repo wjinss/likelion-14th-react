@@ -68,6 +68,7 @@ const fonts = {
   notoSansKR,
   gothicA1,
   pretendard,
-}
+  spoqaHandSansNeo,
+} as const
 
 export default fonts
