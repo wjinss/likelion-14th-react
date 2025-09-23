@@ -69,7 +69,8 @@ export interface Hair {
   color: string
   type: string
 }
-// -----------------------------------------
+
+// --------------------------------------------------------------------------
 
 export interface PostListResponse {
   posts: Post[]
@@ -91,4 +92,27 @@ export interface Post {
 export interface Reactions {
   likes: number
   dislikes: number
+}
+
+// --------------------------------------------------------------------------
+
+export interface PostCommentsResponse {
+  comments: Comment[]
+  total: number
+  skip: number
+  limit: number
+}
+
+export interface Comment {
+  id: number
+  body: string
+  postId: number
+  likes: number
+  user: User
+}
+
+export interface User {
+  id: number
+  username: string
+  fullName: string
 }
