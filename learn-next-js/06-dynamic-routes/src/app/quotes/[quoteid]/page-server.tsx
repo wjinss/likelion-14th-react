@@ -3,18 +3,17 @@ import { Section } from '@/components'
 import { tw } from '@/utils'
 import { fetchQuoteById } from '../api'
 
-export default async function QuoteSinglePage({
-  params,
-}: {
-  params: Promise<{ quoteId: string }>
-}) {
-  const { quoteId } = await params
+interface Props {
+  params: Promise<{
+    quoteId: string
+  }>
+}
 
+export default async function QuoteSinglePage({ params }: Props) {
+  const { quoteId } = await params
   const quoteResponse = await fetchQuoteById(quoteId)
 
-  if ('message' in quoteResponse) {
-    notFound()
-  }
+  if ('message' in quoteResponse) notFound()
 
   return (
     <Section title="인용 구절">
